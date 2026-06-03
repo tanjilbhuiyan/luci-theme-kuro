@@ -1,15 +1,15 @@
 #
-# Copyright (C) 2025 eamonxg <eamonxiong@gmail.com>
+# Copyright (C) 2025 luci-theme-kuro
 # Licensed under the Apache License, Version 2.0.
 #
 
 include $(TOPDIR)/rules.mk
 
-LUCI_TITLE:=Outline Theme (A modern browser theme built with Vite and Tailwind CSS)
+LUCI_TITLE:=Kuro Theme (A modern dark-mode LuCI theme built with Vite 8 and Tailwind CSS)
 LUCI_DEPENDS:=+luci-base
 
-PKG_VERSION:=0.12.0
-PKG_RELEASE:=20260304
+PKG_VERSION:=1.0.0
+PKG_RELEASE:=20260604
 PKG_LICENSE:=Apache-2.0
 
 LUCI_MINIFY_CSS:=

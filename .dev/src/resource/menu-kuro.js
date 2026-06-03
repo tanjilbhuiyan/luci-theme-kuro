@@ -576,8 +576,8 @@ return baseclass.extend({
   },
 
   closeAllDropdowns(except) {
-    // Close all outline-selects
-    document.querySelectorAll(".outline-select.open").forEach((s) => {
+    // Close all kuro-selects
+    document.querySelectorAll(".kuro-select.open").forEach((s) => {
       if (s !== except) s.classList.remove("open");
     });
     // Close all cbi-dropdowns
@@ -588,38 +588,38 @@ return baseclass.extend({
 
   initCustomSelects() {
     const replace = (sel) => {
-      if (sel._outlineReplaced || sel.closest(".outline-select")) return;
+      if (sel._outlineReplaced || sel.closest(".kuro-select")) return;
       sel._outlineReplaced = true;
 
       const opts = Array.from(sel.options);
       if (!opts.length) return;
 
       const wrap = document.createElement("div");
-      wrap.className = "outline-select";
+      wrap.className = "kuro-select";
       wrap.tabIndex = 0;
       if (sel.disabled) wrap.classList.add("disabled");
 
       const trigger = document.createElement("div");
-      trigger.className = "outline-select-trigger";
+      trigger.className = "kuro-select-trigger";
 
       const val = document.createElement("span");
-      val.className = "outline-select-value";
+      val.className = "kuro-select-value";
       val.textContent = sel.options[sel.selectedIndex]?.text || "";
 
       const chevron = document.createElement("span");
-      chevron.className = "outline-select-chevron";
+      chevron.className = "kuro-select-chevron";
 
       trigger.append(val, chevron);
 
       const panel = document.createElement("div");
-      panel.className = "outline-select-panel";
+      panel.className = "kuro-select-panel";
 
       const buildOptions = () => {
         panel.innerHTML = "";
         Array.from(sel.options).forEach((opt) => {
           const item = document.createElement("div");
           item.className =
-            "outline-select-option" +
+            "kuro-select-option" +
             (opt.index === sel.selectedIndex ? " selected" : "");
           item.dataset.value = opt.value;
           item.dataset.index = opt.index;
@@ -683,9 +683,9 @@ return baseclass.extend({
         } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
           e.preventDefault();
           const items = Array.from(
-            panel.querySelectorAll(".outline-select-option"),
+            panel.querySelectorAll(".kuro-select-option"),
           );
-          const cur = panel.querySelector(".outline-select-option.selected");
+          const cur = panel.querySelector(".kuro-select-option.selected");
           const idx = items.indexOf(cur);
           const next =
             e.key === "ArrowDown"
@@ -708,7 +708,7 @@ return baseclass.extend({
 
     replaceAll();
 
-    // Close outline-selects when cbi-dropdown opens
+    // Close kuro-selects when cbi-dropdown opens
     document.addEventListener("click", (e) => {
       const openBtn = e.target.closest(".cbi-dropdown > .open");
       if (openBtn) {

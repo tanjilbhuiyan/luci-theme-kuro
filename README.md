@@ -1,62 +1,20 @@
-# Outline Theme
+# Kuro Theme
 
-A modern OpenWrt LuCI theme. Fork of [luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora) with a massive visual overhaul.
+A dark-first OpenWrt LuCI theme. **Kuro** (黒) means black — the surrounding interface lives in deep shadow while your configuration content stays crisp and readable in light panels.
 
-Heavily inspired by [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code), [Mintlify](https://mintlify.com) documentation layouts, and [21st.dev sign-in components](https://21st.dev/community/components/erikx/sign-in-flow-1/default).
+Fork of [luci-theme-outline](https://github.com/tickcount/luci-theme) by [tickcount](https://github.com/tickcount), which itself is a visual overhaul of [luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora) by [eamonxg](https://github.com/eamonxg).
 
-## Preview
+## Design
 
-| Desktop | Tablet | Phone |
-|---------|--------|-------|
-| ![Desktop](preview/pc.png) | ![Tablet](preview/tablet.png) | ![Phone](preview/phone.png) |
+- **Dark chrome only** — no theme toggles, no light mode switches, no distractions
+- **Light content panels** — forms, tables, and cards render on a warm off-white surface for maximum readability
+- **Minimal & dynamic** — fewer decorative elements, smoother motion, sharper focus states
 
-https://github.com/user-attachments/assets/d3701be2-686f-48ec-b569-c7113755dba5
+## Stack
 
-## What Changed
-
-### Design
-- New warm, neutral color palette replacing the cool blue-tinted scheme
-- Calmer, less saturated tones across the entire interface
-- Near-black dark mode instead of the previous teal-green
-
-### Typography
-- New font stack: Inter for UI, Aeonik Pro for headings, Geist Mono for code
-- Lighter heading weights for a more refined feel
-- Larger body text for better readability
-
-### Layout
-- Three-column docs-style layout: sidebar navigation, main content, and page table of contents
-- Narrower content area for comfortable reading width
-- Breadcrumb navigation on mobile showing current section and page
-
-### Header
-- Frosted glass header that becomes opaque on scroll
-- Logo image next to device hostname
-- Visible logout button on desktop
-- Simple light/dark toggle replacing the three-way switcher
-
-### Notifications
-- Alert messages now appear as floating toasts in the top-right corner
-- Toasts stack, animate in with a spring effect, and can be dismissed
-
-### Controls
-- Smaller, cleaner buttons with softer corners
-- Boolean checkboxes restyled as pill toggle switches
-- Dropdowns show a checkmark next to the selected item
-- Smoother focus states on all inputs
-
-### Transitions
-- Smooth fade between pages via View Transitions API
-- Animated color shift when switching between light and dark mode
-
-### Login page
-- Redesigned with a subtle dot-grid background pattern
-- Cleaner card layout
-
-### Removed
-- Floating toolbar with quick-access icon buttons
-- Mega-menu and boxed dropdown navigation
-- Three-position theme switcher in footer
+- **Vite 8**
+- **Tailwind CSS v4**
+- **pnpm**
 
 ## Compatibility
 
@@ -67,28 +25,42 @@ https://github.com/user-attachments/assets/d3701be2-686f-48ec-b569-c7113755dba5
 
 ## Installation
 
-OpenWrt 25.12+ and snapshots use `apk`; earlier versions use `opkg`.
-
-**opkg** (OpenWrt &lt; 25.12):
+### opkg (OpenWrt < 25.12)
 
 ```sh
-cd /tmp && uclient-fetch -O luci-theme-outline.ipk \
-  https://github.com/tickcount/luci-theme/releases/latest/download/luci-theme-outline_0.12.0-r20260304_all.ipk \
-  && opkg install luci-theme-outline.ipk
+cd /tmp && uclient-fetch -O luci-theme-kuro.ipk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro_1.0.0-r20260604_all.ipk \
+  && opkg install luci-theme-kuro.ipk
 ```
 
-**apk** (OpenWrt 25.12+):
+### apk (OpenWrt 25.12+)
 
 ```sh
-cd /tmp && uclient-fetch -O luci-theme-outline.apk \
-  https://github.com/tickcount/luci-theme/releases/latest/download/luci-theme-outline-0.12.0-r20260304.apk \
-  && apk add --allow-untrusted luci-theme-outline.apk
+cd /tmp && uclient-fetch -O luci-theme-kuro.apk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro-1.0.0-r20260604.apk \
+  && apk add --allow-untrusted luci-theme-kuro.apk
 ```
 
 ## Development
 
-Built with **Vite 7**, **Tailwind CSS v4**, and **pnpm**. See [Development docs](.dev/docs/DEVELOPMENT.md).
+```bash
+cd .dev/
+pnpm install
+pnpm dev       # Dev server at http://127.0.0.1:5173
+pnpm build     # Production build
+```
+
+Set `VITE_OPENWRT_HOST` in `.dev/.env` to your router's IP for proxying.
+
+See [AGENTS.md](AGENTS.md) for full development, testing, and deployment documentation.
+
+## Credits
+
+- **Tanjil Bhuiyan** <tanjilbhuiyan@gmail.com> — Kuro Theme
+- **tickcount** — [luci-theme-outline](https://github.com/tickcount/luci-theme)
+- **eamonxg** — [luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora)
+- **Jo-Philipp Wich** — [luci-theme-bootstrap](https://github.com/openwrt/luci)
 
 ## License
 
-Apache License 2.0. Based on [luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora) by eamonxg.
+Apache License 2.0

@@ -13,7 +13,7 @@ function removeAllChildren(targetDir) {
 
 function cleanBuildOutput() {
   const projectRoot = path.resolve("..");
-  const outlineDir = path.join(projectRoot, "htdocs", "luci-static", "outline");
+  const kuroDir = path.join(projectRoot, "htdocs", "luci-static", "kuro");
   const resourcesDir = path.join(
     projectRoot,
     "htdocs",
@@ -23,14 +23,14 @@ function cleanBuildOutput() {
 
   console.log("🧹 start clean build output...");
 
-  if (fs.existsSync(outlineDir)) {
-    for (const item of fs.readdirSync(outlineDir)) {
+  if (fs.existsSync(kuroDir)) {
+    for (const item of fs.readdirSync(kuroDir)) {
       if (item !== "public") {
-        const itemPath = path.join(outlineDir, item);
+        const itemPath = path.join(kuroDir, item);
         console.log(`   remove: ${itemPath}`);
         fs.rmSync(itemPath, { recursive: true, force: true });
       } else {
-        console.log(`   keep: ${path.join(outlineDir, "public")}`);
+        console.log(`   keep: ${path.join(kuroDir, "public")}`);
       }
     }
   }

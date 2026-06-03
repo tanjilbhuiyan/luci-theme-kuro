@@ -1,0 +1,152 @@
+{%
+	import { getuid, getspnam } from 'luci.core';
+	import { cursor } from 'uci';
+
+	const boardinfo = ubus.call('system', 'board');
+	const uci = cursor();
+	const tokens = uci.get_all('kuro', 'theme') || {};
+	const icon_cache_version = tokens.icon_cache_version || '0';
+	const logo_png = tokens.logo_png || 'logo.png';
+
+	http.prepare_content('text/html; charset=UTF-8');
+-%}
+
+<!DOCTYPE html>
+<html lang="{{ dispatcher.lang }}">
+	<head>
+		<meta charset="utf-8">
+		<title>{{ striptags(`${dispatched?.title ?  `${_(dispatched.title)} - ` : ''}${boardinfo.hostname ?? '?'}`) }}</title>
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const updateNavbarOpacity = () => {
+					const overlay = document.getElementById('header-blur-overlay');
+					if (overlay) {
+						overlay.setAttribute('data-is-opaque', window.scrollY > 50 ? 'true' : 'false');
+					}
+				};
+				window.addEventListener('scroll', updateNavbarOpacity, { passive: true });
+				updateNavbarOpacity();
+			});
+		</script>
+		<style>html{background-color:#09090b}</style>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="theme-color" content="#09090b">
+		<meta name="view-transition" content="same-origin">
+		<link rel="stylesheet" href="{{ media }}/main.css">
+		<link rel="icon" href="{{ media }}/images/{{ logo_png }}?v={{ icon_cache_version }}" sizes="32x32">
+		{% if (node?.css): %}
+		<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
+		{% endif %}
+		{% if (css): %}
+		<style title="text/css">{{ css }}</style>
+		{% endif %}
+		{% if (length(tokens)): %}
+		<style>
+			:root {
+				{% for (let key in tokens): %}
+				{% if (index(key, 'dark_') == 0 || index(key, 'struct_') == 0): %}
+				--{{ replace(substr(key, index(key, 'dark_') == 0 ? 5 : 7), '_', '-') }}: {{ tokens[key] }};
+				{% endif %}
+				{% endfor %}
+			}
+		</style>
+		{% endif %}
+		<script src="{{ dispatcher.build_url('admin/translations', dispatcher.lang) }}"></script>
+		<script src="{{ resource }}/cbi.js"></script>
+	</head>
+
+	<body class="lang_{{ dispatcher.lang }} {{ entityencode(striptags(node?.title ?? ''), true) }}" data-page="{{ entityencode(join('-', ctx.request_path), true) }}">
+		{% if (!blank_page): %}
+		<header>
+			<div id="header-blur-overlay" class="header-blur-overlay" data-is-opaque="false"></div>
+			<div class="header-content">
+				<a class="brand" href="/"><img class="brand-logo" src="{{ media }}/images/{{ logo_png }}?v={{ icon_cache_version }}" alt="" width="24" height="24"><span class="brand-text">{{ striptags(boardinfo.hostname ?? '?') }}</span></a>
+				<div class="header-spacer"></div>
+				<a class="header-logout-btn" href="{{ dispatcher.build_url('admin/logout') }}">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+					{{ _('Logout') }}
+				</a>
+
+				<div id="indicators" class="pull-right"></div>
+			</div>
+			<div class="header-row-2">
+				<div class="mobile-menu-toggle-row2" id="mobile-menu-btn" title="{{ _('Menu') }}">
+					<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+						<path d="M2.5 4h11M2.5 8h11M2.5 12h11"/>
+					</svg>
+				</div>
+				<div class="header-breadcrumb">
+					{%
+						const rp = ctx.request_path;
+						const categoryPath = (length(rp) >= 2) ? (rp[0] + "/" + rp[1]) : null;
+						const parent = categoryPath ? dispatcher.lookup(categoryPath) : null;
+						const pagePath = (length(rp) >= 3) ? (rp[0] + "/" + rp[1] + "/" + rp[2]) : null;
+						const pageNode = pagePath ? dispatcher.lookup(pagePath) : null;
+						const categoryTitle = parent?.node?.title;
+						const pageTitle = pageNode?.node?.title ?? dispatched?.title;
+					%}
+					{% if (categoryTitle): %}
+					<span>{{ _(categoryTitle) }}</span>
+					{% endif %}
+					{% if (categoryTitle && pageTitle): %}
+					<svg class="breadcrumb-chevron" width="3" height="24" viewBox="0 -9 3 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M0 0L3 3L0 6"/></svg>
+					{% endif %}
+					{% if (pageTitle): %}
+					<span class="breadcrumb-current">{{ _(pageTitle) }}</span>
+					{% endif %}
+				</div>
+			</div>
+		</header>
+
+		<div class="mobile-menu-overlay" id="mobile-menu-overlay">
+			<div class="mobile-nav-close" id="mobile-nav-close">
+				<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+					<path d="M4 4l8 8M12 4l-8 8"/>
+				</svg>
+			</div>
+			<nav class="mobile-nav">
+				<div class="mobile-nav-header">
+					<a class="brand" href="/"><img class="brand-logo" src="{{ media }}/images/{{ logo_png }}?v={{ icon_cache_version }}" alt="" width="24" height="24"><span class="brand-text">{{ striptags(boardinfo.hostname ?? "?") }}</span></a>
+				</div>
+				<a class="header-logout-btn" href="{{ dispatcher.build_url('admin/logout') }}">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+					{{ _('Logout') }}
+				</a>
+				<ul class="mobile-nav-list" id="mobile-nav-list">
+				</ul>
+			</nav>
+		</div>
+
+		<div id="maincontent">
+			<aside class="docs-sidebar" id="sidebar"></aside>
+			<div class="docs-content">
+
+			{% if (getuid() == 0 && getspnam('root')?.pwdp === ''): %}
+				<div class="alert-message warning">
+					<h4>{{ _('No password set!') }}</h4>
+					<p>{{ _('There is no password set on this router. Please configure a root password to protect the web interface.') }}</p>
+					{% if (dispatcher.lookup("admin/system/admin")): %}
+					  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/admin") }}">{{ _('Go to password configuration...') }}</a></div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if (boardinfo.rootfs_type == "initramfs"): %}
+				<div class="alert-message warning">
+					<h4>{{ _('System running in recovery (initramfs) mode.') }}</h4>
+					<p>{{ _('No changes to settings will be stored and are lost after rebooting. This mode should only be used to install a firmware upgrade') }}</p>
+					{% if (dispatcher.lookup("admin/system/flash")): %}
+					  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/flash") }}">{{ _('Go to firmware upgrade...') }}</a></div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			<noscript>
+				<div class="alert-message warning">
+					<h4>{{ _('JavaScript required!') }}</h4>
+					<p>{{ _('You must enable JavaScript in your browser or LuCI will not work properly.') }}</p>
+				</div>
+			</noscript>
+
+			<div id="tabmenu" style="display:none"></div>
+		{% endif %}

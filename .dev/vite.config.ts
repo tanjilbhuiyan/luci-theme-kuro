@@ -1,6 +1,11 @@
 /**
- * Copyright (C) 2025 eamonxg <eamonxiong@gmail.com>
+ * Copyright (C) 2025 Tanjil Bhuiyan <tanjilbhuiyan@gmail.com>
  * Licensed under the Apache License, Version 2.0.
+ *
+ * Based on luci-theme-outline by tickcount
+ *   https://github.com/tickcount/luci-theme
+ * Which is derived from luci-theme-aurora by eamonxg
+ *   https://github.com/eamonxg/luci-theme-aurora
  */
 
 import tailwindcss from "@tailwindcss/vite";
@@ -39,7 +44,7 @@ function createLuciJsCompressPlugin(): Plugin {
   let jsFiles: string[] = [];
 
   return {
-    name: "luci-js-compress",
+    name: "kuro-js-compress",
     apply: "build",
 
     configResolved(config: ResolvedConfig) {
@@ -93,16 +98,14 @@ function createLocalServePlugin(): Plugin {
   const resourceConfig: ResourceConfig = {
     css: {
       routes: {
-        "/luci-static/outline/main.css": "/src/media/main.css",
+        "/luci-static/kuro/main.css": "/src/media/main.css",
       },
       shouldRewrite: true,
       hmrMessage: "CSS file changed",
     },
     js: {
       routes: {
-        "/luci-static/resources/view/outline/sysauth.js":
-          "src/resource/view/outline/sysauth.js",
-        "/luci-static/resources/menu-outline.js": "src/resource/menu-outline.js",
+        "/luci-static/resources/menu-kuro.js": "src/resource/menu-kuro.js",
       },
       shouldRewrite: false,
       hmrMessage: "JS file changed",
@@ -135,8 +138,8 @@ function createLocalServePlugin(): Plugin {
         const [pathname, search] = req.url.split("?");
 
         // Serve static assets (fonts, images) from public directory
-        if (pathname.startsWith("/luci-static/outline/")) {
-          const subPath = pathname.replace("/luci-static/outline/", "");
+        if (pathname.startsWith("/luci-static/kuro/")) {
+          const subPath = pathname.replace("/luci-static/kuro/", "");
           const ext = subPath.split(".").pop()?.toLowerCase() || "";
           const mimeTypes: Record<string, string> = {
             otf: "font/otf",
@@ -154,7 +157,7 @@ function createLocalServePlugin(): Plugin {
 
           if (mimeTypes[ext]) {
             try {
-              const filePath = resolve(CURRENT_DIR, "public/outline", subPath);
+              const filePath = resolve(CURRENT_DIR, "public/kuro", subPath);
               const data = await readFile(filePath);
               res.setHeader("Content-Type", mimeTypes[ext]);
               res.setHeader("Cache-Control", "no-store");
@@ -290,7 +293,7 @@ export default defineConfig(({ mode }) => {
           main: resolve(CURRENT_DIR, "src/media/main.css"),
         },
         output: {
-          assetFileNames: "outline/[name].[ext]",
+          assetFileNames: "kuro/[name].[ext]",
         },
       },
     },

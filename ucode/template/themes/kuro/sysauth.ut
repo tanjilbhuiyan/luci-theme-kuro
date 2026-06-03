@@ -1,7 +1,13 @@
 {#
- luci-theme-outline:
- Copyright 2025 eamonxg <eamonxiong@gmail.com>
- This theme is derived from luci-theme-bootstrap UT template.
+ luci-theme-kuro
+ Copyright 2025 Tanjil Bhuiyan <tanjilbhuiyan@gmail.com>
+ Licensed under the Apache License 2.0.
+
+ Based on luci-theme-outline by tickcount
+   https://github.com/tickcount/luci-theme
+ Which is derived from luci-theme-aurora by eamonxg
+   https://github.com/eamonxg/luci-theme-aurora
+
  luci-theme-bootstrap:
  Copyright 2022 Jo-Philipp Wich <jo@mein.io>
  Licensed to the public under the Apache License 2.0.
@@ -130,21 +136,18 @@ document.getElementById('luci_username').value ? document.getElementById('luci_p
 	var tLoc = gl.getUniformLocation(pg, 'u_time');
 	var rLoc = gl.getUniformLocation(pg, 'u_resolution');
 	var hasError = c.closest('.login-screen').hasAttribute('data-error');
-	var isDark = document.documentElement.getAttribute('data-darkmode') === 'true';
 
 	gl.uniform1fv(gl.getUniformLocation(pg, 'u_opacities'),
 		[0.3, 0.3, 0.3, 0.5, 0.5, 0.5, 0.8, 0.8, 0.8, 1.0]);
 	gl.uniform3fv(gl.getUniformLocation(pg, 'u_colors'),
 		hasError
 			? [1,0.2,0.2, 1,0.3,0.25, 1,0.15,0.15, 0.9,0.2,0.2, 1,0.25,0.2, 0.95,0.1,0.1]
-			: isDark
-				? [1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1]
-				: [0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0]);
+			: [1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1]);
 	gl.uniform1f(gl.getUniformLocation(pg, 'u_total_size'), 20.0);
 	gl.uniform1f(gl.getUniformLocation(pg, 'u_dot_size'), 6.0);
 
 	gl.enable(gl.BLEND);
-	gl.blendFunc(gl.SRC_ALPHA, isDark ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA);
+	gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 
 	function resize() {
 		c.width = c.clientWidth * 2;
