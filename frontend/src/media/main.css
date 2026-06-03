@@ -43,7 +43,7 @@
   --background: #070707;
   --foreground: #e6e6e6;
 
-  --primary: #7f9bd4;
+  --primary: #8ba8e0;
   --primary-foreground: #070707;
 
   --secondary: #141414;
@@ -54,10 +54,10 @@
 
   --sidebar-link: #888;
   --sidebar-link-active: #e6e6e6;
-  --sidebar-link-active-bg: rgba(255, 255, 255, 0.08);
+  --sidebar-link-active-bg: rgba(139, 168, 224, 0.1);
   --sidebar-hover-bg: rgba(255, 255, 255, 0.04);
   --toc-heading-color: #888;
-  --eyebrow-color: #7f9bd4;
+  --eyebrow-color: #8ba8e0;
 
   --destructive: #5a1a1a;
   --destructive-foreground: #f0a0a0;
@@ -82,7 +82,7 @@
 
   --border: #1f1f1f;
 
-  --link: #7f9bd4;
+  --link: #8ba8e0;
 
   --input-checked: #ffffff;
 
@@ -97,8 +97,8 @@
 
   --overlay-base: #000000;
 
-  --progress-bar-start: #7f9bd4;
-  --progress-bar-end: #5070a8;
+  --progress-bar-start: #8ba8e0;
+  --progress-bar-end: #6080b8;
 
   --header-bg: #0a0a0a;
   --header-interactive: #1f1f1f;
@@ -109,8 +109,8 @@
 
   --tooltip-bg: #151515;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Aeonik Pro", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Aeonik Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Aeonik Pro", ui-sans-serif, system-ui, sans-serif;
   --font-mono:
     "Geist Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
 
@@ -145,7 +145,7 @@
   --error-foreground: #8a2020;
   --destructive: #f0d0d0;
   --destructive-foreground: #6a1a1a;
-  --link: #4a6fa5;
+  --link: #3a6090;
 }
 
 /* ========== View Transitions ========== */
@@ -402,7 +402,7 @@
     }
   }
 
-  /* ── Ambient page depth ── */
+  /* ── Ambient page depth + noise texture ── */
   body::before {
     content: "";
     position: fixed;
@@ -412,14 +412,26 @@
     background:
       radial-gradient(
         ellipse 80% 50% at 50% -10%,
-        rgba(127, 155, 212, 0.04),
+        rgba(139, 168, 224, 0.05),
         transparent
       ),
       radial-gradient(
         ellipse 60% 40% at 80% 100%,
-        rgba(127, 155, 212, 0.025),
+        rgba(139, 168, 224, 0.03),
         transparent
       );
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
   }
 
   h1,
@@ -768,10 +780,12 @@
       & > .docs-content {
         @apply bg-background flex min-w-0 flex-1 flex-col lg:mt-8 lg:max-w-[720px];
         border-radius: 1rem;
+        padding: 2rem;
         box-shadow:
           0 1px 2px rgba(0, 0, 0, 0.04),
           0 4px 8px rgba(0, 0, 0, 0.04),
-          0 8px 24px rgba(0, 0, 0, 0.06);
+          0 8px 24px rgba(0, 0, 0, 0.06),
+          0 0 0 1px rgba(0, 0, 0, 0.04);
 
         /* Category eyebrow label (e.g. "Status", "System") — matches reference "GETTING STARTED" */
         & > h2 {
@@ -989,21 +1003,21 @@
     .cbi-button-apply,
     .cbi-button-reload {
       @apply border-primary bg-primary hover:bg-primary/90 text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60;
-      box-shadow: 0 0 0 0 rgba(127, 155, 212, 0);
+      box-shadow: 0 0 0 0 rgba(139, 168, 224, 0);
       transition:
         all 0.2s ease,
         box-shadow 0.3s ease;
 
       &:hover:not([disabled]) {
         box-shadow:
-          0 0 16px rgba(127, 155, 212, 0.25),
+          0 0 16px rgba(139, 168, 224, 0.25),
           0 2px 4px rgba(0, 0, 0, 0.1);
         transform: translateY(-0.5px);
       }
 
       &:active:not([disabled]) {
         transform: translateY(0);
-        box-shadow: 0 0 8px rgba(127, 155, 212, 0.15);
+        box-shadow: 0 0 8px rgba(139, 168, 224, 0.15);
       }
     }
 
@@ -2402,7 +2416,23 @@
     text-shadow:
       -0.2px 0 0 currentColor,
       0.2px 0 0 currentColor;
-    box-shadow: 0 0 20px rgba(127, 155, 212, 0.08);
+    box-shadow:
+      0 0 20px rgba(139, 168, 224, 0.1),
+      inset 0 0 0 1px rgba(139, 168, 224, 0.06);
+    position: relative;
+  }
+
+  a.sidebar-link.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    border-radius: 0 3px 3px 0;
+    background: var(--primary);
+    opacity: 0.8;
   }
 
   /* Logout link at bottom of sidebar */
