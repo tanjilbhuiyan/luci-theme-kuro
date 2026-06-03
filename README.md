@@ -29,7 +29,7 @@ Fork of [luci-theme-outline](https://github.com/tickcount/luci-theme) by [tickco
 
 ```sh
 cd /tmp && uclient-fetch -O luci-theme-kuro.ipk \
-  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro_1.0.0-r20260604_all.ipk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro_1.0.1-r20260604_all.ipk \
   && opkg install luci-theme-kuro.ipk
 ```
 
@@ -37,20 +37,20 @@ cd /tmp && uclient-fetch -O luci-theme-kuro.ipk \
 
 ```sh
 cd /tmp && uclient-fetch -O luci-theme-kuro.apk \
-  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro-1.0.0-r20260604.apk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro-1.0.1-r20260604.apk \
   && apk add --allow-untrusted luci-theme-kuro.apk
 ```
 
 ## Development
 
 ```bash
-cd .dev/
+cd frontend/
 pnpm install
 pnpm dev       # Dev server at http://127.0.0.1:5173
 pnpm build     # Production build
 ```
 
-Set `VITE_OPENWRT_HOST` in `.dev/.env` to your router's IP for proxying.
+Set `VITE_OPENWRT_HOST` in `frontend/.env` to your router's IP for proxying.
 
 See [AGENTS.md](AGENTS.md) for full development, testing, and deployment documentation.
 

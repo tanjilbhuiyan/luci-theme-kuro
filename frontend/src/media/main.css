@@ -10,7 +10,6 @@
 
 @import "tailwindcss";
 
-
 /* ── Fonts ── */
 @font-face {
   font-family: "Aeonik Pro";
@@ -112,12 +111,13 @@
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Aeonik Pro", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  --font-mono:
+    "Geist Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
 
   --spacing: 0.25rem;
   --container-max-width: 72rem;
 }
-/* ── Light Content Palette ── */
+/* ── Readable Content Surface ── */
 .docs-content {
   --background: #f3f3ec;
   --foreground: #1a1a1a;
@@ -147,7 +147,6 @@
   --destructive-foreground: #6a1a1a;
   --link: #4a6fa5;
 }
-
 
 /* ========== View Transitions ========== */
 @view-transition {
@@ -220,11 +219,8 @@
 }
 
 .bg-dots--fade-edges {
-  mask-image: radial-gradient(
-      ellipse 60% 55% at center,
-      black 0%,
-      transparent 70%
-    ),
+  mask-image:
+    radial-gradient(ellipse 60% 55% at center, black 0%, transparent 70%),
     linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
   mask-composite: intersect;
 }
@@ -414,8 +410,16 @@
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(127, 155, 212, 0.04), transparent),
-      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(127, 155, 212, 0.025), transparent);
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        rgba(127, 155, 212, 0.04),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 80% 100%,
+        rgba(127, 155, 212, 0.025),
+        transparent
+      );
   }
 
   h1,
@@ -570,7 +574,8 @@
         transition: padding 0.3s ease;
 
         @media (max-width: 1023px) {
-          border-bottom: 1px solid color-mix(in srgb, var(--foreground) 6%, transparent);
+          border-bottom: 1px solid
+            color-mix(in srgb, var(--foreground) 6%, transparent);
         }
       }
 
@@ -580,7 +585,10 @@
         height: 0;
         opacity: 0;
         overflow: hidden;
-        transition: height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+        transition:
+          height 0.3s ease,
+          opacity 0.3s ease,
+          padding 0.3s ease;
         padding-top: 0;
         padding-bottom: 0;
 
@@ -614,43 +622,6 @@
         @apply flex-1;
       }
 
-      .theme-toggle {
-        @apply flex size-8 cursor-pointer items-center justify-center rounded-none border-none bg-transparent p-2;
-        color: var(--muted-foreground);
-        box-shadow: none;
-        transition: color 0.2s ease, opacity 0.3s ease, visibility 0.3s ease;
-        opacity: 1;
-        visibility: visible;
-
-        @media (max-width: 1023px) {
-          opacity: 0;
-          visibility: hidden;
-          width: 0;
-          padding: 0;
-          overflow: hidden;
-        }
-
-        &:hover {
-          color: var(--foreground);
-        }
-
-        & svg {
-          @apply size-4;
-        }
-
-        & .theme-toggle-moon {
-          @apply hidden;
-        }
-
-        &.is-dark .theme-toggle-sun {
-          @apply hidden;
-        }
-
-        &.is-dark .theme-toggle-moon {
-          @apply block;
-        }
-      }
-
       .mobile-controls {
         @apply hidden;
       }
@@ -669,7 +640,7 @@
       }
 
       .header-breadcrumb {
-        @apply flex min-w-0 flex-1 items-center text-sm leading-6 whitespace-nowrap overflow-hidden;
+        @apply flex min-w-0 flex-1 items-center overflow-hidden text-sm leading-6 whitespace-nowrap;
         margin-left: 16px;
         gap: 12px;
         color: var(--muted-foreground);
@@ -698,7 +669,8 @@
         overflow: hidden;
 
         &:not(:empty) {
-          animation: indicator-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          animation: indicator-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1)
+            forwards;
         }
 
         & span[data-indicator] {
@@ -780,7 +752,10 @@
         width: 0;
         opacity: 0;
         margin-right: 0;
-        transition: width 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+        transition:
+          width 0.3s ease,
+          opacity 0.3s ease,
+          margin 0.3s ease;
 
         @media (min-width: 1024px) {
           width: 18rem;
@@ -791,12 +766,12 @@
       }
 
       & > .docs-content {
-        @apply flex min-w-0 flex-1 flex-col bg-background lg:mt-8 lg:max-w-[720px];
+        @apply bg-background flex min-w-0 flex-1 flex-col lg:mt-8 lg:max-w-[720px];
         border-radius: 1rem;
         box-shadow:
-          0 1px 2px rgba(0,0,0,0.04),
-          0 4px 8px rgba(0,0,0,0.04),
-          0 8px 24px rgba(0,0,0,0.06);
+          0 1px 2px rgba(0, 0, 0, 0.04),
+          0 4px 8px rgba(0, 0, 0, 0.04),
+          0 8px 24px rgba(0, 0, 0, 0.06);
 
         /* Category eyebrow label (e.g. "Status", "System") — matches reference "GETTING STARTED" */
         & > h2 {
@@ -818,14 +793,14 @@
 
       /* ── Sidebar Navigation (container) ── */
       .sidebar-nav {
-        @apply fixed top-14 flex h-[calc(100vh-3.5rem)] flex-col overflow-y-auto pb-8 pt-8 max-lg:hidden;
+        @apply fixed top-14 flex h-[calc(100vh-3.5rem)] flex-col overflow-y-auto pt-8 pb-8 max-lg:hidden;
         width: 18rem;
         z-index: 20;
       }
 
       /* ── Table of Contents ── */
       .toc-inner {
-        @apply fixed top-14 h-[calc(100vh-3.5rem)] overflow-y-auto pb-8 pt-10;
+        @apply fixed top-14 h-[calc(100vh-3.5rem)] overflow-y-auto pt-10 pb-8;
         width: 16.5rem;
         z-index: 20;
       }
@@ -970,7 +945,6 @@
     }
   }
 
-
   @layer button {
     button,
     .btn,
@@ -993,11 +967,13 @@
     .cbi-button-up,
     .cbi-button-down {
       @apply border-secondary bg-secondary text-secondary-foreground hover:bg-secondary/90;
-      transition: all 0.2s ease, transform 0.15s ease;
+      transition:
+        all 0.2s ease,
+        transform 0.15s ease;
 
       &:hover:not([disabled]) {
         transform: translateY(-0.5px);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       }
 
       &:active:not([disabled]) {
@@ -1012,12 +988,16 @@
     .btn.primary,
     .cbi-button-apply,
     .cbi-button-reload {
-      @apply border-primary bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-60 disabled:cursor-not-allowed;
+      @apply border-primary bg-primary hover:bg-primary/90 text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60;
       box-shadow: 0 0 0 0 rgba(127, 155, 212, 0);
-      transition: all 0.2s ease, box-shadow 0.3s ease;
+      transition:
+        all 0.2s ease,
+        box-shadow 0.3s ease;
 
       &:hover:not([disabled]) {
-        box-shadow: 0 0 16px rgba(127, 155, 212, 0.25), 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow:
+          0 0 16px rgba(127, 155, 212, 0.25),
+          0 2px 4px rgba(0, 0, 0, 0.1);
         transform: translateY(-0.5px);
       }
 
@@ -1035,7 +1015,7 @@
     }
 
     .cbi-button-add {
-      @apply h-9 border-primary/70 bg-primary/10 text-primary hover:bg-primary/20 hover:border-primary/90;
+      @apply border-primary/70 bg-primary/10 text-primary hover:bg-primary/20 hover:border-primary/90 h-9;
     }
 
     .cbi-page-actions > .cbi-dropdown {
@@ -1073,8 +1053,16 @@
         transition: none !important;
 
         &:hover {
-          border-color: color-mix(in srgb, var(--primary) 50%, transparent) !important;
-          background: color-mix(in srgb, var(--primary) 10%, var(--page-bg)) !important;
+          border-color: color-mix(
+            in srgb,
+            var(--primary) 50%,
+            transparent
+          ) !important;
+          background: color-mix(
+            in srgb,
+            var(--primary) 10%,
+            var(--page-bg)
+          ) !important;
           color: var(--primary) !important;
           z-index: 1;
         }
@@ -1092,8 +1080,16 @@
         transition: none !important;
 
         &:hover {
-          border-color: color-mix(in srgb, var(--primary) 50%, transparent) !important;
-          background: color-mix(in srgb, var(--primary) 10%, var(--page-bg)) !important;
+          border-color: color-mix(
+            in srgb,
+            var(--primary) 50%,
+            transparent
+          ) !important;
+          background: color-mix(
+            in srgb,
+            var(--primary) 10%,
+            var(--page-bg)
+          ) !important;
           color: var(--primary) !important;
           z-index: 1;
         }
@@ -1107,8 +1103,16 @@
 
       /* Chevron shows active state while dropdown is open */
       &[open] > .open {
-        border-color: color-mix(in srgb, var(--primary) 50%, transparent) !important;
-        background: color-mix(in srgb, var(--primary) 10%, var(--page-bg)) !important;
+        border-color: color-mix(
+          in srgb,
+          var(--primary) 50%,
+          transparent
+        ) !important;
+        background: color-mix(
+          in srgb,
+          var(--primary) 10%,
+          var(--page-bg)
+        ) !important;
         color: var(--primary) !important;
       }
 
@@ -1124,7 +1128,11 @@
 
       /* Selected item — specificity 0,6,2 */
       &[open] > ul.dropdown > li[display][selected] {
-        background: color-mix(in srgb, var(--primary) 15%, transparent) !important;
+        background: color-mix(
+          in srgb,
+          var(--primary) 15%,
+          transparent
+        ) !important;
         color: var(--primary) !important;
       }
 
@@ -1136,12 +1144,16 @@
 
       /* Selected hover — specificity 0,7,2 */
       &[open] > ul.dropdown > li[display][selected]:hover {
-        background: color-mix(in srgb, var(--primary) 20%, transparent) !important;
+        background: color-mix(
+          in srgb,
+          var(--primary) 20%,
+          transparent
+        ) !important;
       }
 
       /* Open dropdown above button — uses ! to override LuCI's inline styles */
       &[open] > ul.dropdown {
-        @apply bottom-full top-auto! max-h-none! mb-1;
+        @apply top-auto! bottom-full mb-1 max-h-none!;
       }
     }
 
@@ -1149,7 +1161,7 @@
     .cbi-button-positive,
     .cbi-button-fieldadd,
     .cbi-button-save {
-      @apply border-border bg-transparent text-foreground hover:bg-secondary;
+      @apply border-border text-foreground hover:bg-secondary bg-transparent;
     }
 
     .cbi-button-negative,
@@ -1178,7 +1190,7 @@
     input[type="password"],
     .cbi-input-text,
     .cbi-input {
-      @apply text-foreground border-border placeholder-muted-foreground/60 focus:border-primary/50 focus:ring-primary/10 relative rounded-md border bg-transparent py-2 px-3 font-mono text-sm leading-relaxed font-normal transition-all duration-200 focus:ring-2 focus:outline-none;
+      @apply text-foreground border-border placeholder-muted-foreground/60 focus:border-primary/50 focus:ring-primary/10 relative rounded-md border bg-transparent px-3 py-2 font-mono text-sm leading-relaxed font-normal transition-all duration-200 focus:ring-2 focus:outline-none;
 
       .table.cbi-section-table & {
         @apply w-full;
@@ -1195,7 +1207,7 @@
 
     /* Outline buttons for Local Time sync actions */
     .cbi-value-field:has(#localtime) .control-group .cbi-button {
-      @apply border-border/70 bg-page-bg text-foreground text-xs font-normal shadow-sm h-9 hover:bg-primary/10 hover:text-primary;
+      @apply border-border/70 bg-page-bg text-foreground hover:bg-primary/10 hover:text-primary h-9 text-xs font-normal shadow-sm;
     }
 
     input[type="radio"],
@@ -1218,7 +1230,7 @@
     /* Pill toggle for boolean form-field checkboxes */
     .cbi-value > .cbi-value-field > input[type="checkbox"],
     .cbi-value > .cbi-value-field > .cbi-checkbox > input[type="checkbox"] {
-      @apply relative mr-0 h-[21px] w-[42px] cursor-pointer appearance-none rounded-full border border-transparent bg-muted transition-all duration-200 active:scale-105;
+      @apply bg-muted relative mr-0 h-[21px] w-[42px] cursor-pointer appearance-none rounded-full border border-transparent transition-all duration-200 active:scale-105;
 
       &::before {
         @apply absolute top-[1px] left-[1px] h-[17px] w-[17px] rounded-full bg-white/80 shadow-lg transition-transform duration-200 ease-in-out content-[''];
@@ -1251,7 +1263,7 @@
 
   @layer textarea {
     textarea {
-      @apply text-foreground bg-panel-bg placeholder-muted-foreground/30 min-h-24 w-full resize-y overflow-y-auto rounded-xl border border-border/80 px-4 py-3 font-mono text-sm leading-relaxed shadow-sm backdrop-blur-sm transition-all duration-200 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none;
+      @apply text-foreground bg-panel-bg placeholder-muted-foreground/30 border-border/80 focus:border-primary/50 focus:ring-primary/10 min-h-24 w-full resize-y overflow-y-auto rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed shadow-sm backdrop-blur-sm transition-all duration-200 focus:ring-2 focus:outline-none;
       &[disabled] {
         @apply cursor-not-allowed opacity-60;
       }
@@ -1260,7 +1272,7 @@
 
   @layer select {
     select {
-      @apply text-foreground border-border/60 bg-page-bg focus:border-primary/50 focus:ring-primary/10 appearance-none h-9 rounded-lg border px-3 pr-10 text-sm font-normal shadow-sm transition-colors duration-200 hover:bg-muted/40 focus:ring-2 focus:outline-none;
+      @apply text-foreground border-border/60 bg-page-bg focus:border-primary/50 focus:ring-primary/10 hover:bg-muted/40 h-9 appearance-none rounded-lg border px-3 pr-10 text-sm font-normal shadow-sm transition-colors duration-200 focus:ring-2 focus:outline-none;
       @apply bg-[url('@assets/icons/arrow-down.svg')] bg-size-[16px] bg-position-[right_0.75rem_center] bg-no-repeat;
       &[disabled] {
         @apply cursor-not-allowed opacity-60;
@@ -1277,7 +1289,7 @@
     }
 
     .kuro-select-trigger {
-      @apply text-foreground border-border/60 bg-page-bg flex h-9 items-center gap-2 rounded-lg border px-3 pr-8 text-sm font-normal shadow-sm transition-colors duration-200 hover:bg-muted/40;
+      @apply text-foreground border-border/60 bg-page-bg hover:bg-muted/40 flex h-9 items-center gap-2 rounded-lg border px-3 pr-8 text-sm font-normal shadow-sm transition-colors duration-200;
       outline: 2px solid transparent;
       outline-offset: 0;
     }
@@ -1291,7 +1303,7 @@
     }
 
     .kuro-select-chevron {
-      @apply text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 transition-transform duration-200;
+      @apply text-muted-foreground absolute top-1/2 right-2.5 -translate-y-1/2 transition-transform duration-200;
 
       &::after {
         content: "";
@@ -1312,7 +1324,6 @@
         @apply top-auto bottom-full mt-0 mb-1;
       }
     }
-
   }
 
   @layer dropdown {
@@ -1325,12 +1336,13 @@
         @apply pointer-events-none opacity-60;
       }
 
-      &.btn, &.cbi-button {
+      &.btn,
+      &.cbi-button {
         @apply h-8;
       }
 
       &:not(.btn):not(.cbi-button) {
-        @apply border-border/60 bg-page-bg h-9 rounded-lg border text-sm font-normal transition-colors duration-200 hover:bg-muted/40;
+        @apply border-border/60 bg-page-bg hover:bg-muted/40 h-9 rounded-lg border text-sm font-normal transition-colors duration-200;
         & > ul > li {
           &[placeholder] {
             @apply hidden;
@@ -1342,7 +1354,7 @@
         @apply m-0 flex flex-1 list-none flex-nowrap items-center gap-0.5 overflow-hidden max-md:flex-wrap;
 
         & > li {
-          @apply m-0 hidden list-none items-center gap-1 overflow-hidden py-1.5 pl-3 pr-0;
+          @apply m-0 hidden list-none items-center gap-1 overflow-hidden py-1.5 pr-0 pl-3;
 
           &[display] {
             @apply !flex;
@@ -1438,7 +1450,7 @@
             @apply border-border/50 flex items-center border-b;
 
             & > input {
-              @apply w-full border-0 bg-transparent px-1 py-2 text-base text-foreground placeholder-muted-foreground/50 outline-none;
+              @apply text-foreground placeholder-muted-foreground/50 w-full border-0 bg-transparent px-1 py-2 text-base outline-none;
             }
           }
         }
@@ -1478,14 +1490,14 @@
   /* Shared dropdown panel styles (kuro-select + cbi-dropdown) */
   .kuro-select.open .kuro-select-panel,
   .cbi-dropdown[open] > ul.dropdown {
-    @apply border-border/80 bg-page-bg absolute left-0 z-60 block w-max min-w-full max-w-[calc(100vw-2rem)] max-h-64 overflow-x-auto overflow-y-auto rounded-lg border p-1.5 shadow-md backdrop-blur-sm;
+    @apply border-border/80 bg-page-bg absolute left-0 z-60 block max-h-64 w-max max-w-[calc(100vw-2rem)] min-w-full overflow-x-auto overflow-y-auto rounded-lg border p-1.5 shadow-md backdrop-blur-sm;
     animation: dropdown-enter 150ms ease-out;
   }
 
   /* Shared dropdown option styles */
   .kuro-select-option,
   .cbi-dropdown[open] > ul.dropdown > li {
-    @apply text-foreground/90 hover:bg-primary/10 hover:text-primary flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm transition-colors duration-100;
+    @apply text-foreground/90 hover:bg-primary/10 hover:text-primary flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm whitespace-nowrap transition-colors duration-100;
 
     &::before {
       content: "";
@@ -1506,7 +1518,7 @@
 
   @layer tooltip {
     .cbi-tooltip {
-      @apply bg-tooltip-bg text-foreground border-border/60 absolute z-110 max-w-[13rem] rounded-md border px-2 py-2 text-xs leading-4 break-normal whitespace-normal opacity-0 scale-95 shadow-md backdrop-blur-xl pointer-events-none;
+      @apply bg-tooltip-bg text-foreground border-border/60 pointer-events-none absolute z-110 max-w-[13rem] scale-95 rounded-md border px-2 py-2 text-xs leading-4 break-normal whitespace-normal opacity-0 shadow-md backdrop-blur-xl;
       transform-origin: var(--tooltip-origin, center bottom);
       transition:
         opacity 150ms ease-out,
@@ -1532,7 +1544,7 @@
       @apply relative inline-block cursor-help whitespace-nowrap underline decoration-current decoration-dotted underline-offset-2 transition-all duration-200;
 
       & .cbi-tooltip {
-        @apply invisible scale-95 opacity-0 pointer-events-none;
+        @apply pointer-events-none invisible scale-95 opacity-0;
         transition:
           opacity 150ms ease-out,
           transform 150ms ease-out,
@@ -1565,14 +1577,39 @@
 
       #maincontent > & {
         --sileo-spring: linear(
-          0, 0.002 0.6%, 0.007 1.2%, 0.015 1.8%, 0.026 2.4%,
-          0.041 3.1%, 0.06 3.8%, 0.108 5.3%, 0.157 6.6%, 0.214 8%,
-          0.467 13.7%, 0.577 16.3%, 0.631 17.7%, 0.682 19.1%,
-          0.73 20.5%, 0.771 21.8%, 0.808 23.1%, 0.844 24.5%,
-          0.874 25.8%, 0.903 27.2%, 0.928 28.6%, 0.952 30.1%,
-          0.972 31.6%, 0.988 33.1%, 1.01 35.7%, 1.025 38.5%,
-          1.034 41.6%, 1.038 45%, 1.035 50.1%, 1.012 64.2%,
-          1.003 73%, 0.999 83.7%, 1
+          0,
+          0.002 0.6%,
+          0.007 1.2%,
+          0.015 1.8%,
+          0.026 2.4%,
+          0.041 3.1%,
+          0.06 3.8%,
+          0.108 5.3%,
+          0.157 6.6%,
+          0.214 8%,
+          0.467 13.7%,
+          0.577 16.3%,
+          0.631 17.7%,
+          0.682 19.1%,
+          0.73 20.5%,
+          0.771 21.8%,
+          0.808 23.1%,
+          0.844 24.5%,
+          0.874 25.8%,
+          0.903 27.2%,
+          0.928 28.6%,
+          0.952 30.1%,
+          0.972 31.6%,
+          0.988 33.1%,
+          1.01 35.7%,
+          1.025 38.5%,
+          1.034 41.6%,
+          1.038 45%,
+          1.035 50.1%,
+          1.012 64.2%,
+          1.003 73%,
+          0.999 83.7%,
+          1
         );
 
         position: fixed;
@@ -1624,7 +1661,9 @@
             overflow: hidden;
             opacity: 0.5;
             cursor: pointer;
-            transition: opacity 150ms, background 150ms;
+            transition:
+              opacity 150ms,
+              background 150ms;
 
             &::after {
               content: "";
@@ -1666,7 +1705,7 @@
 
       &::before {
         content: "";
-        @apply absolute left-5 top-1/2 block h-5 w-5 -translate-y-1/2 bg-current;
+        @apply absolute top-1/2 left-5 block h-5 w-5 -translate-y-1/2 bg-current;
         mask-size: contain;
         mask-repeat: no-repeat;
         mask-position: center;
@@ -1770,7 +1809,6 @@
         @apply mt-3 max-md:mt-2;
       }
     }
-
   }
 
   @layer progress {
@@ -1868,11 +1906,11 @@
       }
 
       & + .cbi-section {
-        @apply border-t border-t-border/50 pt-8;
+        @apply border-t-border/50 border-t pt-8;
       }
 
       &[data-tab-title] {
-        @apply m-0 border-b-0 border-t-0 p-0;
+        @apply m-0 border-t-0 border-b-0 p-0;
       }
       &[data-tab-active="true"] {
         @apply mb-0 pb-8;
@@ -1886,7 +1924,7 @@
         @apply border-0 bg-transparent shadow-none hover:shadow-none;
 
         &:not([data-tab-title]) + .cbi-section:not([data-tab-title]) {
-          @apply border-t border-t-border/50 pt-8;
+          @apply border-t-border/50 border-t pt-8;
         }
       }
 
@@ -2107,7 +2145,7 @@
       }
 
       & > .modal {
-        @apply border-border/50 bg-page-bg flex w-4xl max-w-full max-h-[90vh] flex-col gap-4 overflow-y-auto rounded-xl border p-6 wrap-break-word whitespace-normal shadow-2xl backdrop-blur-lg backdrop-saturate-150 max-md:max-h-[95vh] max-md:gap-3 max-md:p-4;
+        @apply border-border/50 bg-page-bg flex max-h-[90vh] w-4xl max-w-full flex-col gap-4 overflow-y-auto rounded-xl border p-6 wrap-break-word whitespace-normal shadow-2xl backdrop-blur-lg backdrop-saturate-150 max-md:max-h-[95vh] max-md:gap-3 max-md:p-4;
 
         & h4 {
           @apply mb-0 text-center;
@@ -2246,23 +2284,43 @@
     }
 
     @keyframes modal-overlay-enter {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     @keyframes modal-overlay-exit {
-      from { opacity: 1; }
-      to { opacity: 0; }
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
     }
 
     @keyframes modal-enter {
-      from { opacity: 0; transform: scale(0.96) translateY(8px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
 
     @keyframes modal-exit {
-      from { opacity: 1; transform: scale(1) translateY(0); }
-      to { opacity: 0; transform: scale(0.96) translateY(8px); }
+      from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+      }
     }
   }
 
@@ -2296,7 +2354,7 @@
 
   /* Section toggle button */
   .sidebar-toggle {
-    @apply flex w-full cursor-pointer items-center justify-start rounded-xl py-1.5 pl-4 pr-3 text-left text-sm font-normal no-underline transition-all duration-150;
+    @apply flex w-full cursor-pointer items-center justify-start rounded-xl py-1.5 pr-3 pl-4 text-left text-sm font-normal no-underline transition-all duration-150;
     color: var(--sidebar-link);
     line-height: 24px;
     background: none;
@@ -2341,7 +2399,9 @@
   a.sidebar-link.active {
     color: var(--sidebar-link-active);
     background: var(--sidebar-link-active-bg);
-    text-shadow: -0.2px 0 0 currentColor, 0.2px 0 0 currentColor;
+    text-shadow:
+      -0.2px 0 0 currentColor,
+      0.2px 0 0 currentColor;
     box-shadow: 0 0 20px rgba(127, 155, 212, 0.08);
   }
 
@@ -2365,7 +2425,7 @@
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
 
-            &.mobile-menu-open {
+      &.mobile-menu-open {
         @apply max-lg:visible max-lg:opacity-100;
 
         & .mobile-nav {
@@ -2434,7 +2494,6 @@
         }
       }
     }
-
   }
 
   @layer table {
@@ -2590,7 +2649,7 @@
 
       & td,
       & .td {
-        @apply text-muted-foreground border-border/30 table-cell border-b px-3 py-2 align-middle text-base first:pl-0 wrap-break-word whitespace-normal max-md:flex-[1_1_50%] max-md:border-0 max-md:px-1 max-md:py-1 max-md:text-sm;
+        @apply text-muted-foreground border-border/30 table-cell border-b px-3 py-2 align-middle text-base wrap-break-word whitespace-normal first:pl-0 max-md:flex-[1_1_50%] max-md:border-0 max-md:px-1 max-md:py-1 max-md:text-sm;
         @apply before:hidden before:content-[attr(data-title)] before:max-md:mb-1 before:max-md:block before:max-md:text-xs before:max-md:font-semibold before:max-md:tracking-wider;
 
         #cbi-samba4 & {
@@ -2698,7 +2757,7 @@
       }
 
       & > .cbi-value-field {
-        @apply max-w-full justify-self-end text-right pr-1;
+        @apply max-w-full justify-self-end pr-1 text-right;
         grid-column: 2;
 
         @media (width < 48rem) {
@@ -2729,7 +2788,8 @@
       }
 
       /* Custom mount-point widgets (no standard title/field) span full width */
-      &:not(:has(> .cbi-value-title)):not(:has(> .cbi-value-field)) > :first-child {
+      &:not(:has(> .cbi-value-title)):not(:has(> .cbi-value-field))
+        > :first-child {
         grid-column: 1 / -1;
       }
     }
@@ -2740,7 +2800,7 @@
       & .item {
         @apply border-border/80 bg-panel-bg pointer-events-auto relative inline-flex grow cursor-move items-center gap-2 overflow-hidden rounded-xl border py-2 pr-9 pl-3.5 text-left font-mono text-sm leading-snug shadow-sm transition-all duration-200 select-text max-md:py-1.5 max-md:pr-8 max-md:pl-3;
         flex-basis: auto;
-        @apply after:bg-muted after:text-muted-foreground after:absolute after:top-1/2 after:-translate-y-1/2 after:right-2 after:inline-flex after:h-6 after:w-6 after:shrink-0 after:cursor-pointer after:items-center after:justify-center after:rounded-xl after:text-sm after:font-medium after:content-['\00D7'];
+        @apply after:bg-muted after:text-muted-foreground after:absolute after:top-1/2 after:right-2 after:inline-flex after:h-6 after:w-6 after:shrink-0 after:-translate-y-1/2 after:cursor-pointer after:items-center after:justify-center after:rounded-xl after:text-sm after:font-medium after:content-['\00D7'];
 
         &.dragging {
           @apply scale-95 cursor-grabbing opacity-50 shadow-2xl;
@@ -2768,7 +2828,7 @@
         }
 
         & > .cbi-button {
-          @apply inline-flex h-6! w-6 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-muted p-0 text-sm font-medium text-muted-foreground shadow-none transition-colors duration-150 hover:bg-primary/10 hover:text-primary active:scale-95;
+          @apply bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary inline-flex h-6! w-6 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 p-0 text-sm font-medium shadow-none transition-colors duration-150 active:scale-95;
         }
       }
     }
@@ -2780,12 +2840,15 @@
 
       /* Active underline — positioned by JS via custom properties */
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         top: var(--tab-active-top, 100%);
         height: 2px;
         background: var(--primary);
-        transition: left 300ms ease-out, width 300ms ease-out, top 300ms ease-out;
+        transition:
+          left 300ms ease-out,
+          width 300ms ease-out,
+          top 300ms ease-out;
         pointer-events: none;
         z-index: 1;
         left: var(--tab-active-left, 0px);
@@ -2804,12 +2867,12 @@
           @apply after:bg-accent after:text-accent-foreground after:absolute after:-top-0.5 after:-right-1.5 after:z-20 after:inline-flex after:min-h-4 after:min-w-4 after:items-center after:justify-center after:rounded-full after:px-1.5 after:py-0.5 after:text-xs after:font-semibold after:content-[attr(data-errors)];
 
           & > a {
-            @apply border-error/50 border rounded-sm;
+            @apply border-error/50 rounded-sm border;
           }
         }
 
         & > a {
-          @apply text-muted-foreground flex cursor-pointer items-center justify-center whitespace-nowrap border-none bg-none text-base font-normal no-underline transition-colors duration-200;
+          @apply text-muted-foreground flex cursor-pointer items-center justify-center border-none bg-none text-base font-normal whitespace-nowrap no-underline transition-colors duration-200;
           height: 46px;
           padding: 0;
 
@@ -2960,7 +3023,7 @@
           @apply flex w-full flex-col items-center gap-6 text-center;
 
           .login-hostname {
-            @apply m-0 -mb-1.5 text-[2.5rem] font-bold leading-none tracking-tight max-md:text-3xl;
+            @apply m-0 -mb-1.5 text-[2.5rem] leading-none font-bold tracking-tight max-md:text-3xl;
             font-family: var(--font-serif);
             color: var(--login-fg);
           }
@@ -2970,7 +3033,11 @@
 
             .login-divider-line {
               @apply h-px flex-1;
-              background-color: color-mix(in srgb, var(--login-fg) 10%, transparent);
+              background-color: color-mix(
+                in srgb,
+                var(--login-fg) 10%,
+                transparent
+              );
             }
 
             .login-divider-text {
@@ -2985,7 +3052,8 @@
             .login-input {
               @apply h-auto w-full appearance-none rounded-full px-4 py-3 text-center font-sans text-base shadow-none backdrop-blur-[2px] transition-colors focus:shadow-none focus:ring-0 focus:outline-none;
               color: var(--login-fg);
-              border: 1px solid color-mix(in srgb, var(--login-fg) 10%, transparent);
+              border: 1px solid
+                color-mix(in srgb, var(--login-fg) 10%, transparent);
               background: var(--login-input-bg);
 
               &::placeholder {
@@ -2993,7 +3061,11 @@
               }
 
               &:focus {
-                border-color: color-mix(in srgb, var(--login-fg) 25%, transparent);
+                border-color: color-mix(
+                  in srgb,
+                  var(--login-fg) 25%,
+                  transparent
+                );
               }
             }
 
@@ -3006,11 +3078,19 @@
               }
 
               .login-submit {
-                @apply absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-0 p-0 shadow-none transition-colors;
+                @apply absolute top-1/2 right-1.5 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-0 p-0 shadow-none transition-colors;
                 color: var(--login-fg);
-                background: color-mix(in srgb, var(--login-accent) 20%, transparent);
+                background: color-mix(
+                  in srgb,
+                  var(--login-accent) 20%,
+                  transparent
+                );
                 &:hover {
-                  background: color-mix(in srgb, var(--login-accent) 35%, transparent);
+                  background: color-mix(
+                    in srgb,
+                    var(--login-accent) 35%,
+                    transparent
+                  );
                 }
 
                 & svg {
@@ -3161,7 +3241,6 @@
       }
     }
   }
-
 
   @layer luci-mod-dashboard {
     .Dashboard {

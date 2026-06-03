@@ -124,9 +124,7 @@ return baseclass.extend({
         }
 
         /* Strip 'notice' so it renders as neutral toast, not warning */
-        const classes = type
-          .split(/\s+/)
-          .filter((c) => c && c !== "notice");
+        const classes = type.split(/\s+/).filter((c) => c && c !== "notice");
         statusToast.className = "alert-message";
         if (classes.length)
           DOMTokenList.prototype.add.apply(statusToast.classList, classes);
@@ -216,9 +214,7 @@ return baseclass.extend({
     }).observe(container, { childList: true });
 
     /* Setup any existing toasts */
-    container
-      .querySelectorAll(":scope > .alert-message")
-      .forEach(setupToast);
+    container.querySelectorAll(":scope > .alert-message").forEach(setupToast);
   },
 
   initVercelTabs() {
@@ -542,8 +538,9 @@ return baseclass.extend({
           if (n.nodeType !== 1) continue;
           if (n.matches?.(".cbi-section-node-tabbed, .cbi-map-tabbed"))
             watch(n);
-          n.querySelectorAll?.(".cbi-section-node-tabbed, .cbi-map-tabbed")
-            .forEach(watch);
+          n.querySelectorAll?.(
+            ".cbi-section-node-tabbed, .cbi-map-tabbed",
+          ).forEach(watch);
           if (n.id === "view") watchView(n);
         }
       }
@@ -578,7 +575,7 @@ return baseclass.extend({
   closeAllDropdowns(except) {
     // Close all kuro-selects
     document.querySelectorAll(".kuro-select.open").forEach((s) => {
-      if (s !== except) s.classList.remove("open");
+      if (s !== except) s.dispatchEvent(new Event("kuro-select-close"));
     });
     // Close all cbi-dropdowns
     document.querySelectorAll(".cbi-dropdown[open]").forEach((d) => {
@@ -589,10 +586,10 @@ return baseclass.extend({
   initCustomSelects() {
     const replace = (sel) => {
       if (sel._outlineReplaced || sel.closest(".kuro-select")) return;
-      sel._outlineReplaced = true;
 
       const opts = Array.from(sel.options);
       if (!opts.length) return;
+      sel._outlineReplaced = true;
 
       const wrap = document.createElement("div");
       wrap.className = "kuro-select";
@@ -664,6 +661,8 @@ return baseclass.extend({
         isOpen = false;
         wrap.classList.remove("open");
       };
+
+      wrap.addEventListener("kuro-select-close", close);
 
       trigger.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -740,12 +739,10 @@ return baseclass.extend({
 
       if (isOpen) {
         /* Reset mobile sidebar sections to default state when closing */
-        overlay
-          .querySelectorAll(".sidebar-section")
-          .forEach((sec) => {
-            const hasActive = sec.querySelector(".sidebar-link.active");
-            sec.classList.toggle("expanded", !!hasActive);
-          });
+        overlay.querySelectorAll(".sidebar-section").forEach((sec) => {
+          const hasActive = sec.querySelector(".sidebar-link.active");
+          sec.classList.toggle("expanded", !!hasActive);
+        });
       }
     });
 
@@ -874,7 +871,6 @@ return baseclass.extend({
 
       if (node) this.renderTabMenu(node, url);
     }
-
   },
 
   renderTabMenu(tree, url, level = 0) {
@@ -1101,7 +1097,8 @@ return baseclass.extend({
 
         /* Keep fixed toc aligned with its flex-child wrapper */
         const syncTocLeft = () => {
-          tocInner.style.left = tocContainer.getBoundingClientRect().left + "px";
+          tocInner.style.left =
+            tocContainer.getBoundingClientRect().left + "px";
         };
         syncTocLeft();
         window.addEventListener("resize", syncTocLeft);
@@ -1143,8 +1140,7 @@ return baseclass.extend({
 
       if (scrollCleanup) scrollCleanup();
       window.addEventListener("scroll", updateActive, { passive: true });
-      scrollCleanup = () =>
-        window.removeEventListener("scroll", updateActive);
+      scrollCleanup = () => window.removeEventListener("scroll", updateActive);
 
       updateActive();
     };

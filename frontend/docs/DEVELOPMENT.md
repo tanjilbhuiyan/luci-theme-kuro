@@ -16,7 +16,7 @@ This guide covers the complete development workflow for the Kuro theme, from env
 ```bash
 # Clone the repository
 git clone git@github.com:tanjilbhuiyan/luci-theme-kuro.git
-cd luci-theme-kuro/.dev/
+cd luci-theme-kuro/frontend/
 
 # Enable Corepack to manage pnpm version
 corepack enable && corepack prepare
@@ -50,7 +50,7 @@ The dev server proxies page requests to your router but intercepts CSS/JS to ser
 **One-time setup:**
 
 ```bash
-cd .dev && pnpm build
+cd frontend && pnpm build
 
 # Copy templates to router
 sftp root@192.168.1.1 <<'SFTP'
@@ -77,7 +77,7 @@ ssh root@192.168.1.1 "uci set luci.themes.Kuro=/luci-static/kuro && uci set luci
 ### Start Development Server
 
 ```bash
-cd luci-theme-kuro/.dev/
+cd luci-theme-kuro/frontend/
 pnpm dev
 ```
 
@@ -90,9 +90,9 @@ http://localhost:5173/cgi-bin/luci
 
 ```
 Browser → localhost:5173
-    ├── /luci-static/kuro/main.css  →  YOUR LOCAL .dev/src/media/main.css  (live!)
-    ├── /luci-static/resources/...  →  YOUR LOCAL .dev/src/resource/...    (live!)
-    ├── /luci-static/kuro/fonts/... →  YOUR LOCAL .dev/public/kuro/...     (live!)
+    ├── /luci-static/kuro/main.css  →  YOUR LOCAL frontend/src/media/main.css  (live!)
+    ├── /luci-static/resources/...  →  YOUR LOCAL frontend/src/resource/...    (live!)
+    ├── /luci-static/kuro/fonts/... →  YOUR LOCAL frontend/public/kuro/...     (live!)
     └── /cgi-bin/luci/...           →  ROUTER 192.168.1.1 (HTML + data)
 ```
 
@@ -101,9 +101,9 @@ The router handles page logic and data. Your PC handles CSS/JS with live reload.
 **Key proxy behaviors:**
 
 1. Proxies `/cgi-bin` requests to OpenWrt device for HTML and data
-2. Intercepts `/luci-static/kuro/main.css` and serves from `.dev/src/media/main.css`
-3. Intercepts `/luci-static/resources/menu-kuro.js` and serves from `.dev/src/resource/menu-kuro.js`
-4. Serves fonts/images from `.dev/public/kuro/`
+2. Intercepts `/luci-static/kuro/main.css` and serves from `frontend/src/media/main.css`
+3. Intercepts `/luci-static/resources/menu-kuro.js` and serves from `frontend/src/resource/menu-kuro.js`
+4. Serves fonts/images from `frontend/public/kuro/`
 5. All other `/luci-static/...` falls through to router proxy
 6. Redirects `/` to `/cgi-bin/luci`
 
@@ -140,7 +140,7 @@ For LuCI-specific JavaScript development, refer to the official API documentatio
 ### Build Command
 
 ```bash
-cd luci-theme-kuro/.dev/
+cd luci-theme-kuro/frontend/
 pnpm build
 ```
 
@@ -163,14 +163,14 @@ htdocs/luci-static/
 1. Vite builds CSS entry point (`src/media/main.css`)
 2. Custom PostCSS plugin removes `@layer` at-rules for OpenWrt compatibility
 3. Custom Vite plugin (`luci-js-compress`) minifies JS files via Terser
-4. Static assets copied from `.dev/public/kuro/`
+4. Static assets copied from `frontend/public/kuro/`
 
 ## Testing
 
 ### Dev Server (CSS/JS changes)
 
 1. Ensure your machine is on the same network as the OpenWrt router.
-2. Set `VITE_OPENWRT_HOST=http://ROUTER_IP` in `.dev/.env`.
+2. Set `VITE_OPENWRT_HOST=http://ROUTER_IP` in `frontend/.env`.
 3. Run `pnpm dev` and open `http://127.0.0.1:5173/cgi-bin/luci`.
 4. CSS and JS changes auto-reload.
 
@@ -196,10 +196,10 @@ Build the `.ipk`/`.apk` via GitHub Actions or OpenWrt SDK, then install on the r
 
 ```bash
 # opkg (OpenWrt < 25.12)
-opkg install /tmp/luci-theme-kuro_1.0.0-r20260604_all.ipk
+opkg install /tmp/luci-theme-kuro_1.0.1-r20260604_all.ipk
 
 # apk (OpenWrt 25.12+)
-apk add --allow-untrusted /tmp/luci-theme-kuro-1.0.0-r20260604.apk
+apk add --allow-untrusted /tmp/luci-theme-kuro-1.0.1-r20260604.apk
 ```
 
 ## Package Compilation
@@ -225,7 +225,7 @@ make package/luci-theme-kuro/compile V=s
 
 ```
 luci-theme-kuro/
-├── .dev/                           # Development environment
+├── frontend/                           # Development environment
 │   ├── docs/                       # Project documentation
 │   │   └── DEVELOPMENT.md          # Development guide (this file)
 │   ├── public/kuro/                 # Public static assets
@@ -270,9 +270,9 @@ luci-theme-kuro/
 ## Tools and Technologies
 
 - **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first CSS framework
-- **[Vite](https://vitejs.dev/)** - Build tool and development server
+- **[Vite](https://vitejsfrontend/)** - Build tool and development server
   **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
-- **[lightningcss](https://lightningcss.dev/)** - CSS minifier
+- **[lightningcss](https://lightningcssfrontend/)** - CSS minifier
 - **[Terser](https://terser.org/)** - JavaScript minifier
 - **[Prettier](https://prettier.io/)** - Code formatter
 - **[prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)** - Tailwind class sorting

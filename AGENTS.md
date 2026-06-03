@@ -28,7 +28,7 @@ Target: OpenWrt 23.05+ routers.
 ## Directory Structure
 
 ```
-.dev/                          # Development environment
+frontend/                          # Development environment
   src/media/main.css           # CSS entry point (Tailwind CSS)
   src/resource/                # JavaScript source files
     menu-kuro.js               # Menu rendering, tabs, sidebar, TOC
@@ -56,10 +56,10 @@ LICENSE                        # Apache 2.0
 
 ## Development Commands
 
-All commands run from the `.dev/` directory:
+All commands run from the `frontend/` directory:
 
 ```bash
-cd .dev/
+cd frontend/
 pnpm install          # Install dependencies
 pnpm dev              # Start dev server (proxies to OpenWrt router)
 pnpm build            # Production build → htdocs/luci-static/
@@ -68,7 +68,7 @@ pnpm clean            # Clean build output
 
 ### Environment Setup
 
-Copy `.dev/.env.example` to `.dev/.env` and set `VITE_OPENWRT_HOST` to your router's address (e.g., `http://192.168.1.1`).
+Copy `frontend/.env.example` to `frontend/.env` and set `VITE_OPENWRT_HOST` to your router's address (e.g., `http://192.168.1.1`).
 
 ### Testing the Theme
 
@@ -79,7 +79,7 @@ Copy `.dev/.env.example` to `.dev/.env` and set `VITE_OPENWRT_HOST` to your rout
 **One-time setup on router:**
 
 ```bash
-cd .dev && pnpm build
+cd frontend && pnpm build
 
 # Copy templates to router
 sftp root@192.168.1.1 <<'SFTP'
@@ -105,7 +105,7 @@ ssh root@192.168.1.1 "uci set luci.themes.Kuro=/luci-static/kuro && uci set luci
 
 **Daily workflow after setup:**
 
-1. Set `VITE_OPENWRT_HOST=http://YOUR_ROUTER_IP` in `.dev/.env`.
+1. Set `VITE_OPENWRT_HOST=http://YOUR_ROUTER_IP` in `frontend/.env`.
 2. Run `pnpm dev` — the Vite server starts at `http://127.0.0.1:5173`.
 3. Open **`http://localhost:5173/cgi-bin/luci`** (your local dev server, NOT the router directly).
 4. CSS and JS changes trigger full page reload automatically.
@@ -114,9 +114,9 @@ ssh root@192.168.1.1 "uci set luci.themes.Kuro=/luci-static/kuro && uci set luci
 
 ```
 Browser → localhost:5173
-    ├── /luci-static/kuro/main.css  →  YOUR LOCAL .dev/src/media/main.css  (live!)
-    ├── /luci-static/resources/...  →  YOUR LOCAL .dev/src/resource/...    (live!)
-    ├── /luci-static/kuro/fonts/... →  YOUR LOCAL .dev/public/kuro/...     (live!)
+    ├── /luci-static/kuro/main.css  →  YOUR LOCAL frontend/src/media/main.css  (live!)
+    ├── /luci-static/resources/...  →  YOUR LOCAL frontend/src/resource/...    (live!)
+    ├── /luci-static/kuro/fonts/... →  YOUR LOCAL frontend/public/kuro/...     (live!)
     └── /cgi-bin/luci/...           →  ROUTER 192.168.1.1 (HTML + data)
 ```
 
@@ -145,7 +145,7 @@ For a complete test including all assets:
 
 ```bash
 # 1. Build frontend assets
-cd .dev/ && pnpm build
+cd frontend/ && pnpm build
 
 # 2. Build OpenWrt package (requires OpenWrt SDK or buildroot)
 # Or use the GitHub Actions workflow to build .ipk/.apk
@@ -153,9 +153,9 @@ cd .dev/ && pnpm build
 # 3. Install on router
 cd /tmp
 # For opkg (OpenWrt < 25.12):
-opkg install luci-theme-kuro_1.0.0-r20260604_all.ipk
+opkg install luci-theme-kuro_1.0.1-r20260604_all.ipk
 # For apk (OpenWrt 25.12+):
-apk add --allow-untrusted luci-theme-kuro-1.0.0-r20260604.apk
+apk add --allow-untrusted luci-theme-kuro-1.0.1-r20260604.apk
 ```
 
 ## Build Pipeline
@@ -164,7 +164,7 @@ apk add --allow-untrusted luci-theme-kuro-1.0.0-r20260604.apk
 2. PostCSS plugin removes `@layer` at-rules (OpenWrt compatibility)
 3. CSS minified via lightningcss
 4. Custom `kuro-js-compress` Vite plugin minifies JS via Terser
-5. Static assets copied from `.dev/public/kuro/`
+5. Static assets copied from `frontend/public/kuro/`
 6. Output lands in `htdocs/luci-static/`
 
 ## Design System
@@ -219,14 +219,14 @@ The CSS includes targeted patch layers for popular LuCI packages:
 
 ## CI/CD Workflows
 
-- **build-and-commit.yml** — On push to `master` (when `.dev/` sources change), auto-builds and commits `htdocs/` output. Commit messages prefixed with `build:` are skipped.
+- **build-and-commit.yml** — On push to `master` (when `frontend/` sources change), auto-builds and commits `htdocs/` output. Commit messages prefixed with `build:` are skipped.
 - **pr-check.yml** — On PRs to `master`/`main`, runs Prettier check and build verification.
 - **build-and-release-kuro.yml** — On `v*` tags or manual trigger, compiles OpenWrt `.ipk`/`.apk` packages.
 
 ## Important Notes
 
 - **JS files are NOT bundled** — they're individually minified and placed at the same relative paths under `resources/`.
-- **`htdocs/` is auto-generated** — don't manually edit files there. Edit sources in `.dev/src/` and run `pnpm build`.
+- **`htdocs/` is auto-generated** — don't manually edit files there. Edit sources in `frontend/src/` and run `pnpm build`.
 - **Template changes** (`.ut` files) have no hot reload — deploy to router and restart uhttpd.
 - **The `@layer` removal PostCSS plugin is critical** — OpenWrt's LuCI doesn't support CSS layers.
 - **Browser targets**: Chrome 111+, Safari 16.4+, Firefox 128+.
