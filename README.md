@@ -1,14 +1,14 @@
 # Kuro Theme
 
-A dark-first OpenWrt LuCI theme. **Kuro** (黒) means black — the surrounding interface lives in deep shadow while your configuration content stays crisp and readable in light panels.
+A dark-first OpenWrt LuCI theme. **Kuro** (黒) means black — the entire interface lives in deep matte shadow while configuration content stays crisp, calm, and readable.
 
 Fork of [luci-theme-outline](https://github.com/tickcount/luci-theme) by [tickcount](https://github.com/tickcount), which itself is a visual overhaul of [luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora) by [eamonxg](https://github.com/eamonxg).
 
 ## Design
 
-- **Dark chrome only** — no theme toggles, no light mode switches, no distractions
-- **Light content panels** — forms, tables, and cards render on a warm off-white surface for maximum readability
-- **Minimal & dynamic** — fewer decorative elements, smoother motion, sharper focus states
+- **Dark-only surface** — no theme toggles, no light mode switches, no distractions
+- **Matte content panels** — forms, tables, and cards stay readable on quiet charcoal surfaces
+- **Minimal & focused** — restrained motion, clear states, and low visual noise
 
 ## Stack
 
@@ -29,7 +29,7 @@ Fork of [luci-theme-outline](https://github.com/tickcount/luci-theme) by [tickco
 
 ```sh
 cd /tmp && uclient-fetch -O luci-theme-kuro.ipk \
-  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro_1.0.3-r20260604_all.ipk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro_1.0.4-r20260604_all.ipk \
   && opkg install luci-theme-kuro.ipk
 ```
 
@@ -37,7 +37,7 @@ cd /tmp && uclient-fetch -O luci-theme-kuro.ipk \
 
 ```sh
 cd /tmp && uclient-fetch -O luci-theme-kuro.apk \
-  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro-1.0.3-r20260604.apk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro-1.0.4-r20260604.apk \
   && apk add --allow-untrusted luci-theme-kuro.apk
 ```
 

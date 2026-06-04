@@ -4,7 +4,7 @@
 
 **Kuro Theme** — a dark-first OpenWrt LuCI theme built with Vite 8 and Tailwind CSS v4. Licensed under Apache 2.0.
 
-**Kuro** (黒) means black in Japanese. The design philosophy is simple: the surrounding chrome lives in deep shadow while configuration content stays crisp and readable on light panels. One mode. Dark chrome. Light content.
+**Kuro** (黒) means black in Japanese. The design philosophy is simple: the entire LuCI interface lives in deep matte shadow while configuration content stays crisp, calm, and readable. One mode. Dark surfaces. Clear content.
 
 Target: OpenWrt 23.05+ routers.
 
@@ -153,9 +153,9 @@ cd frontend/ && pnpm build
 # 3. Install on router
 cd /tmp
 # For opkg (OpenWrt < 25.12):
-opkg install luci-theme-kuro_1.0.3-r20260604_all.ipk
+opkg install luci-theme-kuro_1.0.4-r20260604_all.ipk
 # For apk (OpenWrt 25.12+):
-apk add --allow-untrusted luci-theme-kuro-1.0.3-r20260604.apk
+apk add --allow-untrusted luci-theme-kuro-1.0.4-r20260604.apk
 ```
 
 ## Build Pipeline
@@ -171,29 +171,28 @@ apk add --allow-untrusted luci-theme-kuro-1.0.3-r20260604.apk
 
 ### Philosophy
 
-- **Dark chrome, light content** — no mode switching. The shell is dark. The content is readable.
-- **Depth through subtlety** — frosted glass header, ambient glows on active items, layered shadows
+- **Dark surfaces, readable content** — no mode switching. The shell and content are dark, with enough contrast for dense configuration pages.
+- **Depth through restraint** — subtle header separation, quiet active states, and minimal shadows
 - **One mode to rule them all** — Kuro is dark. Content is visible. That's it.
 
 ### Color Palette
 
 **Dark Chrome (`:root`)**:
-- Background: `#070707` — near-black with warmth
-- Foreground: `#e6e6e6` — soft white
-- Primary: `#7f9bd4` — muted slate blue
-- Border: `#1f1f1f` — barely-there separators
-- Muted: `#141414` — elevated dark surfaces
+- Background: `#0a0a0a` — matte near-black
+- Foreground: `#d4d4d4` — soft gray
+- Primary: `#7a9ec8` — muted steel blue
+- Border: `#1e1e1e` — subtle separators
+- Muted: `#161616` — elevated dark surfaces
 
-**Light Content (`.docs-content`)**:
-- Background: `#f3f3ec` — warm off-white
-- Foreground: `#1a1a1a` — near-black for readability
-- Border: `#d0d0c8` — warm gray separators
-- Muted: `#e8e8e0` — subtle elevated surfaces
+**Dark Content (`.docs-content`)**:
+- Background: `#111111` — quiet charcoal panel
+- Foreground: `#d4d4d4` — readable soft gray
+- Border: `#262626` — visible but restrained separators
+- Muted: `#1a1a1a` — nested controls and secondary surfaces
 
 ### Typography
 
-- **Inter** (400/500/600) — UI body text
-- **Aeonik Pro** (500) — headings, brand
+- **Aeonik Pro** (500) — UI body text, headings, brand
 - **Geist Mono** (400/500) — code, terminal, inputs
 
 ### Key Features
