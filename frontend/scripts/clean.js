@@ -23,17 +23,13 @@ function cleanBuildOutput() {
 
   console.log("🧹 start clean build output...");
 
-  if (fs.existsSync(kuroDir)) {
-    for (const item of fs.readdirSync(kuroDir)) {
-      if (item !== "public") {
-        const itemPath = path.join(kuroDir, item);
-        console.log(`   remove: ${itemPath}`);
-        fs.rmSync(itemPath, { recursive: true, force: true });
-      } else {
-        console.log(`   keep: ${path.join(kuroDir, "public")}`);
-      }
-    }
-  }
+	if (fs.existsSync(kuroDir)) {
+		for (const item of fs.readdirSync(kuroDir)) {
+			const itemPath = path.join(kuroDir, item);
+			console.log(`   remove: ${itemPath}`);
+			fs.rmSync(itemPath, { recursive: true, force: true });
+		}
+	}
 
   if (!fs.existsSync(resourcesDir)) {
     fs.mkdirSync(resourcesDir, { recursive: true });

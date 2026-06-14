@@ -28,7 +28,7 @@
 				updateNavbarOpacity();
 			});
 		</script>
-		<style>html{background-color:#09090b}</style>
+		<style>html{background-color:#0a0a0a}</style>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 		<meta name="theme-color" content="#09090b">
 		<meta name="view-transition" content="same-origin">
@@ -55,7 +55,7 @@
 		<script src="{{ resource }}/cbi.js"></script>
 	</head>
 
-	<body class="lang_{{ dispatcher.lang }} {{ entityencode(striptags(node?.title ?? ''), true) }}" data-page="{{ entityencode(join('-', ctx.request_path), true) }}">
+	<body class="lang_{{ dispatcher.lang }}" data-page="{{ entityencode(join('-', ctx.request_path), true) }}">
 		{% if (!blank_page): %}
 		<header>
 			<div id="header-blur-overlay" class="header-blur-overlay" data-is-opaque="false"></div>
@@ -70,11 +70,11 @@
 				<div id="indicators" class="pull-right"></div>
 			</div>
 			<div class="header-row-2">
-				<div class="mobile-menu-toggle-row2" id="mobile-menu-btn" title="{{ _('Menu') }}">
-					<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+				<button type="button" class="mobile-menu-toggle-row2" id="mobile-menu-btn" title="{{ _('Menu') }}" aria-label="{{ _('Menu') }}" aria-expanded="false" aria-controls="mobile-menu-overlay">
+					<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
 						<path d="M2.5 4h11M2.5 8h11M2.5 12h11"/>
 					</svg>
-				</div>
+				</button>
 				<div class="header-breadcrumb">
 					{%
 						const rp = ctx.request_path;

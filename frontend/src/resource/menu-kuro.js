@@ -17,6 +17,25 @@ return baseclass.extend({
     this.initModalOverride();
   },
 
+  createChevronSvg() {
+    const chevron = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg",
+    );
+    chevron.setAttribute("viewBox", "0 0 16 16");
+    chevron.setAttribute("width", "16");
+    chevron.setAttribute("height", "16");
+    chevron.setAttribute("fill", "currentColor");
+    chevron.classList.add("sidebar-chevron");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute(
+      "d",
+      "M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z",
+    );
+    chevron.appendChild(path);
+    return chevron;
+  },
+
   initUciIndicator() {
     const original = ui.changes?.setIndicator;
     if (!original) return;
@@ -140,7 +159,7 @@ return baseclass.extend({
   },
 
   initToastAutoDismiss() {
-    const DISMISS_DELAY = 30000;
+    const DEFAULT_DELAY = 8000;
     const container = document.getElementById("maincontent");
     if (!container) return;
 
@@ -184,8 +203,15 @@ return baseclass.extend({
       /* Recalculate stacking indices (newest = index 0 = top) */
       updateIndices();
 
-      /* Auto-dismiss after delay */
-      toast._toastTimer = setTimeout(() => dismissToast(toast), DISMISS_DELAY);
+      /* Auto-dismiss after delay; keep errors/danger persistent */
+      const isPersistent =
+        toast.classList.contains("error") || toast.classList.contains("danger");
+      if (!isPersistent) {
+        toast._toastTimer = setTimeout(
+          () => dismissToast(toast),
+          DEFAULT_DELAY,
+        );
+      }
 
       /* Dismiss on close button click */
       const btn = toast.querySelector(".btn");
@@ -307,9 +333,11 @@ return baseclass.extend({
       tabMenu.addEventListener("mouseleave", () => updateHoverIndicator(null));
 
       const observer = new MutationObserver(updateActiveIndicator);
-      items.forEach((li) =>
-        observer.observe(li, { attributes: true, attributeFilter: ["class"] }),
-      );
+      observer.observe(tabMenu, {
+        attributes: true,
+        attributeFilter: ["class"],
+        subtree: true,
+      });
 
       requestAnimationFrame(updateActiveIndicator);
 
@@ -591,9 +619,16 @@ return baseclass.extend({
       if (!opts.length) return;
       sel._outlineReplaced = true;
 
+      const selectId = `kuro-select-${Math.random().toString(36).slice(2, 9)}`;
+
       const wrap = document.createElement("div");
       wrap.className = "kuro-select";
       wrap.tabIndex = 0;
+      wrap.id = selectId;
+      wrap.setAttribute("role", "combobox");
+      wrap.setAttribute("aria-haspopup", "listbox");
+      wrap.setAttribute("aria-expanded", "false");
+      wrap.setAttribute("aria-controls", `${selectId}-panel`);
       if (sel.disabled) wrap.classList.add("disabled");
 
       const trigger = document.createElement("div");
@@ -605,11 +640,23 @@ return baseclass.extend({
 
       const chevron = document.createElement("span");
       chevron.className = "kuro-select-chevron";
+      chevron.setAttribute("aria-hidden", "true");
 
       trigger.append(val, chevron);
 
       const panel = document.createElement("div");
       panel.className = "kuro-select-panel";
+      panel.id = `${selectId}-panel`;
+      panel.setAttribute("role", "listbox");
+
+      const updateActiveDescendant = () => {
+        const selected = panel.querySelector(".kuro-select-option.selected");
+        if (selected && isOpen) {
+          wrap.setAttribute("aria-activedescendant", selected.id);
+        } else {
+          wrap.removeAttribute("aria-activedescendant");
+        }
+      };
 
       const buildOptions = () => {
         panel.innerHTML = "";
@@ -620,16 +667,25 @@ return baseclass.extend({
             (opt.index === sel.selectedIndex ? " selected" : "");
           item.dataset.value = opt.value;
           item.dataset.index = opt.index;
+          item.id = `${selectId}-opt-${opt.index}`;
+          item.setAttribute("role", "option");
+          item.setAttribute(
+            "aria-selected",
+            String(opt.index === sel.selectedIndex),
+          );
           item.textContent = opt.text;
           item.addEventListener("click", (e) => {
             e.stopPropagation();
             sel.selectedIndex = opt.index;
             sel.dispatchEvent(new Event("change", { bubbles: true }));
             val.textContent = opt.text;
-            panel
-              .querySelectorAll(".selected")
-              .forEach((o) => o.classList.remove("selected"));
+            panel.querySelectorAll(".selected").forEach((o) => {
+              o.classList.remove("selected");
+              o.setAttribute("aria-selected", "false");
+            });
             item.classList.add("selected");
+            item.setAttribute("aria-selected", "true");
+            updateActiveDescendant();
             close();
           });
           panel.appendChild(item);
@@ -649,17 +705,21 @@ return baseclass.extend({
         this.closeAllDropdowns(wrap);
         isOpen = true;
         wrap.classList.add("open");
+        wrap.setAttribute("aria-expanded", "true");
         const rect = wrap.getBoundingClientRect();
         const below = window.innerHeight - rect.bottom;
         panel.classList.toggle("above", below < 200 && rect.top > 200);
         const cur = panel.querySelector(".selected");
         if (cur) cur.scrollIntoView({ block: "nearest" });
+        updateActiveDescendant();
       };
 
       const close = () => {
         if (!isOpen) return;
         isOpen = false;
         wrap.classList.remove("open");
+        wrap.setAttribute("aria-expanded", "false");
+        wrap.removeAttribute("aria-activedescendant");
       };
 
       wrap.addEventListener("kuro-select-close", close);
@@ -731,11 +791,12 @@ return baseclass.extend({
     menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
       const isOpen = overlay.classList.contains("mobile-menu-open");
+      const nextOpen = !isOpen;
 
-      overlay.classList.toggle("mobile-menu-open", !isOpen);
-      menuToggle.classList.toggle("active", !isOpen);
-      menuToggle.setAttribute("aria-expanded", !isOpen);
-      document.body.style.overflow = isOpen ? "" : "hidden";
+      overlay.classList.toggle("mobile-menu-open", nextOpen);
+      menuToggle.classList.toggle("active", nextOpen);
+      menuToggle.setAttribute("aria-expanded", String(nextOpen));
+      document.body.style.overflow = nextOpen ? "hidden" : "";
 
       if (isOpen) {
         /* Reset mobile sidebar sections to default state when closing */
@@ -785,31 +846,11 @@ return baseclass.extend({
 
       const hasActive = category.name === L.env.dispatchpath[1];
 
-      /* Chevron SVG — identical to renderFullSidebar */
-      const chevron = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "svg",
-      );
-      chevron.setAttribute("viewBox", "0 0 16 16");
-      chevron.setAttribute("width", "16");
-      chevron.setAttribute("height", "16");
-      chevron.setAttribute("fill", "currentColor");
-      chevron.classList.add("sidebar-chevron");
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path",
-      );
-      path.setAttribute(
-        "d",
-        "M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z",
-      );
-      chevron.appendChild(path);
-
       /* Toggle button */
       const toggle = E(
         "button",
         { class: "sidebar-toggle" + (hasActive ? " active" : "") },
-        [_(category.title), chevron],
+        [_(category.title), this.createChevronSvg()],
       );
 
       /* Sub-items list */
@@ -927,31 +968,11 @@ return baseclass.extend({
 
       const hasActive = category.name === L.env.dispatchpath[1];
 
-      /* Chevron SVG */
-      const chevron = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "svg",
-      );
-      chevron.setAttribute("viewBox", "0 0 16 16");
-      chevron.setAttribute("width", "16");
-      chevron.setAttribute("height", "16");
-      chevron.setAttribute("fill", "currentColor");
-      chevron.classList.add("sidebar-chevron");
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path",
-      );
-      path.setAttribute(
-        "d",
-        "M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z",
-      );
-      chevron.appendChild(path);
-
       /* Toggle button */
       const toggle = E(
         "button",
         { class: "sidebar-toggle" + (hasActive ? " active" : "") },
-        [_(category.title), chevron],
+        [_(category.title), this.createChevronSvg()],
       );
 
       /* Sub-items list */
@@ -1010,7 +1031,9 @@ return baseclass.extend({
     if (!tocContainer) return;
 
     let scrollCleanup = null;
+    let resizeCleanup = null;
     let prevKey = "";
+    let sectionTops = [];
 
     const buildToc = () => {
       const sections = document.querySelectorAll(
@@ -1120,6 +1143,10 @@ return baseclass.extend({
         return top;
       };
 
+      const computeTops = () => {
+        sectionTops = sectionElements.map((s) => (s ? getSectionTop(s) : 0));
+      };
+
       const updateActive = () => {
         let activeIdx = 0;
         const scrollY = window.scrollY + headerOffset + 20;
@@ -1127,7 +1154,7 @@ return baseclass.extend({
         for (let i = sectionElements.length - 1; i >= 0; i--) {
           const s = sectionElements[i];
           if (!s || s.offsetHeight === 0) continue;
-          if (getSectionTop(s) <= scrollY) {
+          if (sectionTops[i] <= scrollY) {
             activeIdx = i;
             break;
           }
@@ -1142,6 +1169,15 @@ return baseclass.extend({
       window.addEventListener("scroll", updateActive, { passive: true });
       scrollCleanup = () => window.removeEventListener("scroll", updateActive);
 
+      if (resizeCleanup) resizeCleanup();
+      const onResize = () => {
+        computeTops();
+        updateActive();
+      };
+      window.addEventListener("resize", onResize);
+      resizeCleanup = () => window.removeEventListener("resize", onResize);
+
+      computeTops();
       updateActive();
     };
 

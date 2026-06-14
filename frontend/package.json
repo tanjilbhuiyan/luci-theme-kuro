@@ -1,11 +1,13 @@
 {
 	"name": "luci-theme-kuro",
-	"description": "Modern OpenWrt LuCI theme built with Vite 8 and TailwindCSS v4 — dark chrome, light content.",
+	"description": "Modern dark-first OpenWrt LuCI theme built with Vite 8 and TailwindCSS v4.",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
 		"build": "npm run clean && vite build",
-		"clean": "node scripts/clean.js"
+		"clean": "node scripts/clean.js",
+		"lint": "prettier --check \"src/**/*.{css,js}\"",
+		"format": "prettier --write \"src/**/*.{css,js}\""
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.1.11",

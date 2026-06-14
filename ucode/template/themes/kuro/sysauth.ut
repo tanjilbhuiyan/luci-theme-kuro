@@ -23,26 +23,31 @@
 	<div class="login-gradient-top"></div>
 	<div class="login-shell">
 		<form method="post" class="login-card">
-			<h1 class="login-hostname">{{ striptags(boardinfo?.hostname ?? '?') }}</h1>
-
-			<div class="login-divider" aria-hidden="true">
-				<span class="login-divider-line"></span>
-				<span class="login-divider-text">{{ _('Authorization Required') }}</span>
-				<span class="login-divider-line"></span>
+			<div class="login-brand">
+				<img class="brand-logo" src="{{ media }}/images/{{ logo_png }}?v={{ icon_cache_version }}" alt="" width="32" height="32">
 			</div>
+
+			<h1 class="login-hostname">{{ striptags(boardinfo?.hostname ?? '?') }}</h1>
+			<p class="login-subtitle">{{ _('Authorization Required') }}</p>
 
 			{% if (fuser): %}
 			<div class="alert-message error" role="alert">{{ _('Invalid username and/or password! Please try again.') }}</div>
 			{% endif %}
 
 			<div class="login-fields">
-				<input name="luci_username" id="luci_username" type="text" class="login-input" value="{{ entityencode(duser ?? '', true) }}" autocomplete="username" placeholder="{{ _('Login') }}">
+				<div class="login-input-wrap">
+					<label class="login-label" for="luci_username">{{ _('Username') }}</label>
+					<input name="luci_username" id="luci_username" type="text" class="login-input" value="{{ entityencode(duser ?? '', true) }}" autocomplete="username" placeholder="{{ _('Enter username') }}">
+				</div>
 
-				<div class="login-password-wrap">
-					<input name="luci_password" id="luci_password" type="password" class="login-input" autocomplete="current-password" placeholder="{{ _('Password') }}">
-					<button type="submit" class="login-submit" aria-label="{{ _('Log in') }}">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-					</button>
+				<div class="login-input-wrap">
+					<label class="login-label" for="luci_password">{{ _('Password') }}</label>
+					<div class="login-password-wrap">
+						<input name="luci_password" id="luci_password" type="password" class="login-input" autocomplete="current-password" placeholder="{{ _('Enter password') }}">
+						<button type="submit" class="login-submit" aria-label="{{ _('Log in') }}">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+						</button>
+					</div>
 				</div>
 			</div>
 
@@ -117,13 +122,22 @@ document.getElementById('luci_username').value ? document.getElementById('luci_p
 		var s = gl.createShader(type);
 		gl.shaderSource(s, src);
 		gl.compileShader(s);
+		if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+			gl.deleteShader(s);
+			return null;
+		}
 		return s;
 	}
 
+	var vs = mkShader(gl.VERTEX_SHADER, vsSource);
+	var fs = mkShader(gl.FRAGMENT_SHADER, fsSource);
+	if (!vs || !fs) return;
+
 	var pg = gl.createProgram();
-	gl.attachShader(pg, mkShader(gl.VERTEX_SHADER, vsSource));
-	gl.attachShader(pg, mkShader(gl.FRAGMENT_SHADER, fsSource));
+	gl.attachShader(pg, vs);
+	gl.attachShader(pg, fs);
 	gl.linkProgram(pg);
+	if (!gl.getProgramParameter(pg, gl.LINK_STATUS)) return;
 	gl.useProgram(pg);
 
 	var buf = gl.createBuffer();
@@ -139,10 +153,11 @@ document.getElementById('luci_username').value ? document.getElementById('luci_p
 
 	gl.uniform1fv(gl.getUniformLocation(pg, 'u_opacities'),
 		[0.3, 0.3, 0.3, 0.5, 0.5, 0.5, 0.8, 0.8, 0.8, 1.0]);
+	var primaryColor = [0.478, 0.62, 0.784];
 	gl.uniform3fv(gl.getUniformLocation(pg, 'u_colors'),
 		hasError
 			? [1,0.2,0.2, 1,0.3,0.25, 1,0.15,0.15, 0.9,0.2,0.2, 1,0.25,0.2, 0.95,0.1,0.1]
-			: [1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1]);
+			: primaryColor.concat(primaryColor, primaryColor, primaryColor, primaryColor, primaryColor));
 	gl.uniform1f(gl.getUniformLocation(pg, 'u_total_size'), 20.0);
 	gl.uniform1f(gl.getUniformLocation(pg, 'u_dot_size'), 6.0);
 
@@ -159,12 +174,23 @@ document.getElementById('luci_username').value ? document.getElementById('luci_p
 	window.addEventListener('resize', resize);
 
 	var t0 = performance.now();
-	(function frame() {
+	var rafId = null;
+	function frame() {
 		gl.uniform1f(tLoc, (performance.now() - t0) / 1000);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-		requestAnimationFrame(frame);
-	})();
+		rafId = requestAnimationFrame(frame);
+	}
+	rafId = requestAnimationFrame(frame);
+
+	document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+			if (rafId) cancelAnimationFrame(rafId);
+			rafId = null;
+		} else if (!rafId) {
+			rafId = requestAnimationFrame(frame);
+		}
+	});
 })();
 </script>
 
