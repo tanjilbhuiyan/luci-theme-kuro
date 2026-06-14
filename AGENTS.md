@@ -29,7 +29,14 @@ Target: OpenWrt 23.05+ routers.
 
 ```
 frontend/                          # Development environment
-  src/media/main.css           # CSS entry point (Tailwind CSS)
+  src/media/                   # CSS entry points and partials
+    main.css                   # Tailwind CSS entry (imports partials)
+    base.css                   # Fonts, variables, base layer
+    layout.css                 # Header, sidebar, TOC, footer
+    components.css             # Buttons, inputs, cards, modals, login, etc.
+    utilities.css              # Utility overrides
+    plugins.css                # Package-specific overrides
+    patches.css                # Temporary fixes
   src/resource/                # JavaScript source files
     menu-kuro.js               # Menu rendering, tabs, sidebar, TOC
   src/assets/icons/            # SVG icons
@@ -64,6 +71,8 @@ pnpm install          # Install dependencies
 pnpm dev              # Start dev server (proxies to OpenWrt router)
 pnpm build            # Production build → htdocs/luci-static/
 pnpm clean            # Clean build output
+pnpm lint             # Check Prettier formatting
+pnpm format           # Fix Prettier formatting
 ```
 
 ### Environment Setup
@@ -153,9 +162,9 @@ cd frontend/ && pnpm build
 # 3. Install on router
 cd /tmp
 # For opkg (OpenWrt < 25.12):
-opkg install luci-theme-kuro_1.0.4-r20260604_all.ipk
+opkg install luci-theme-kuro_1.1.0-r20260615_all.ipk
 # For apk (OpenWrt 25.12+):
-apk add --allow-untrusted luci-theme-kuro-1.0.4-r20260604.apk
+apk add --allow-untrusted luci-theme-kuro-1.1.0-r20260615.apk
 ```
 
 ## Build Pipeline

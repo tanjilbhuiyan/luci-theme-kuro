@@ -111,6 +111,11 @@ The router handles page logic and data. Your PC handles CSS/JS with live reload.
 
 This project uses **Prettier** for code formatting with automatic formatting on save.
 
+```bash
+pnpm lint    # Check formatting
+pnpm format  # Fix formatting
+```
+
 **Prettier Configuration:**
 
 - Located in `.prettierrc`
@@ -196,10 +201,10 @@ Build the `.ipk`/`.apk` via GitHub Actions or OpenWrt SDK, then install on the r
 
 ```bash
 # opkg (OpenWrt < 25.12)
-opkg install /tmp/luci-theme-kuro_1.0.4-r20260604_all.ipk
+opkg install /tmp/luci-theme-kuro_1.1.0-r20260615_all.ipk
 
 # apk (OpenWrt 25.12+)
-apk add --allow-untrusted /tmp/luci-theme-kuro-1.0.4-r20260604.apk
+apk add --allow-untrusted /tmp/luci-theme-kuro-1.1.0-r20260615.apk
 ```
 
 ## Package Compilation
@@ -233,11 +238,17 @@ luci-theme-kuro/
 │   │   └── images/                 # Theme images
 │   ├── scripts/                    # Build scripts
 │   │   └── clean.js                # Build cleanup utility
-│   ├── src/                        # Source code
-│   │   ├── assets/icons/           # SVG icons
-│   │   ├── media/                  # CSS entry points
-│   │   │   └── main.css            # Main stylesheet (Tailwind CSS)
-│   │   └── resource/               # JavaScript resources
+  │   ├── src/                        # Source code
+  │   │   ├── assets/icons/           # SVG icons
+  │   │   ├── media/                  # CSS entry points and partials
+  │   │   │   ├── main.css            # Tailwind CSS entry (imports partials)
+  │   │   │   ├── base.css            # Fonts, variables, base layer
+  │   │   │   ├── layout.css          # Header, sidebar, TOC, footer
+  │   │   │   ├── components.css      # Buttons, inputs, cards, modals, login
+  │   │   │   ├── utilities.css       # Utility overrides
+  │   │   │   ├── plugins.css         # Package-specific overrides
+  │   │   │   └── patches.css         # Temporary fixes
+  │   │   └── resource/               # JavaScript resources
 │   │       └── menu-kuro.js         # Menu logic
 │   ├── .env.example                # Environment variables template
 │   ├── .prettierrc                 # Prettier configuration
