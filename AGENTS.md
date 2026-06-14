@@ -162,9 +162,9 @@ cd frontend/ && pnpm build
 # 3. Install on router
 cd /tmp
 # For opkg (OpenWrt < 25.12):
-opkg install luci-theme-kuro_1.2.1-r20260615_all.ipk
+opkg install luci-theme-kuro_1.2.2-r20260615_all.ipk
 # For apk (OpenWrt 25.12+):
-apk add --allow-untrusted luci-theme-kuro-1.2.1-r20260615.apk
+apk add --allow-untrusted luci-theme-kuro-1.2.2-r20260615.apk
 ```
 
 ## Build Pipeline

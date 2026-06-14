@@ -29,7 +29,7 @@ Fork of [luci-theme-outline](https://github.com/tickcount/luci-theme) by [tickco
 
 ```sh
 cd /tmp && uclient-fetch -O luci-theme-kuro.ipk \
-  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro_1.2.1-r20260615_all.ipk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro_1.2.2-r20260615_all.ipk \
   && opkg install luci-theme-kuro.ipk
 ```
 
@@ -37,7 +37,7 @@ cd /tmp && uclient-fetch -O luci-theme-kuro.ipk \
 
 ```sh
 cd /tmp && uclient-fetch -O luci-theme-kuro.apk \
-  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro-1.2.1-r20260615.apk \
+  https://github.com/tanjilbhuiyan/luci-theme-kuro/releases/latest/download/luci-theme-kuro-1.2.2-r20260615.apk \
   && apk add --allow-untrusted luci-theme-kuro.apk
 ```
 

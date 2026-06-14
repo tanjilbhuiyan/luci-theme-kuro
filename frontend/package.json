@@ -1,6 +1,6 @@
 {
 	"name": "luci-theme-kuro",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"description": "Modern dark-first OpenWrt LuCI theme built with Vite 8 and TailwindCSS v4.",
 	"type": "module",
 	"scripts": {
