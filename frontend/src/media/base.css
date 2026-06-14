@@ -28,18 +28,40 @@
 }
 
 :root {
+  /* Core surfaces */
   --background: #0a0a0a;
   --foreground: #d4d4d4;
+  --page-bg: #0a0a0a;
+  --panel-bg: #111111;
+  --card: #111111;
+  --border: #1e1e1e;
+  --input: #181818;
+  --radius: 0.375rem;
 
+  /* Typography */
+  --font-sans: "Aeonik Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Aeonik Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    "Geist Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* Interactive */
   --primary: #7a9ec8;
   --primary-foreground: #0a0a0a;
+  --link: #7a9ec8;
+  --input-checked: #d4d4d4;
 
+  /* Muted & secondary */
   --secondary: #161616;
   --secondary-foreground: #d4d4d4;
-
   --muted: #161616;
   --muted-foreground: #737373;
+  --accent: #161616;
+  --accent-foreground: #d4d4d4;
+  --default: rgba(255, 255, 255, 0.04);
+  --default-foreground: #d4d4d4;
+  --label-surface: #151515;
 
+  /* Sidebar */
   --sidebar-link: #737373;
   --sidebar-link-active: #d4d4d4;
   --sidebar-link-active-bg: rgba(122, 158, 200, 0.08);
@@ -47,60 +69,34 @@
   --toc-heading-color: #737373;
   --eyebrow-color: #7a9ec8;
 
-  --destructive: #4a1a1a;
-  --destructive-foreground: #e8a0a0;
-
-  --accent: #161616;
-  --accent-foreground: #d4d4d4;
-
-  --default: rgba(255, 255, 255, 0.04);
-  --default-foreground: #d4d4d4;
-
-  --info: rgba(30, 64, 120, 0.4);
-  --info-foreground: #7db4e0;
-
-  --warning: rgba(100, 70, 20, 0.4);
-  --warning-foreground: #e8c840;
-
-  --success: rgba(30, 80, 60, 0.4);
-  --success-foreground: #70d4a0;
-
-  --error: rgba(100, 30, 30, 0.4);
-  --error-foreground: #e06060;
-
-  --border: #1e1e1e;
-
-  --link: #7a9ec8;
-
-  --input-checked: #d4d4d4;
-
-  --card: #111111;
-  --input: #181818;
-  --radius: 0.375rem;
-
-  --label-surface: #151515;
-
-  --terminal-bg: #0c0c0c;
-  --terminal-foreground: #d4d4d4;
-
-  --overlay-base: #000000;
-
-  --progress-bar-start: #7a9ec8;
-  --progress-bar-end: #5a80b0;
-
+  /* Header */
   --header-bg: #0c0c0c;
   --header-interactive: #1e1e1e;
 
-  --page-bg: #0a0a0a;
+  /* Status colors — pre-computed for performance */
+  --info: rgba(30, 64, 120, 0.4);
+  --info-foreground: #7db4e0;
+  --warning: rgba(100, 70, 20, 0.4);
+  --warning-foreground: #e8c840;
+  --success: rgba(30, 80, 60, 0.4);
+  --success-foreground: #70d4a0;
+  --error: rgba(100, 30, 30, 0.4);
+  --error-foreground: #e06060;
+  --destructive: #4a1a1a;
+  --destructive-foreground: #e8a0a0;
 
-  --panel-bg: #111111;
-
+  /* Components */
+  --terminal-bg: #0c0c0c;
+  --terminal-foreground: #d4d4d4;
+  --overlay-base: #000000;
   --tooltip-bg: #161616;
+  --progress-bar-start: #7a9ec8;
+  --progress-bar-end: #5a80b0;
 
-  --font-sans: "Aeonik Pro", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Aeonik Pro", ui-sans-serif, system-ui, sans-serif;
-  --font-mono:
-    "Geist Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  /* Pre-computed hover/active variants */
+  --hover-surface: rgba(255, 255, 255, 0.06);
+  --active-surface: rgba(255, 255, 255, 0.04);
+  --focus-ring: rgba(122, 158, 200, 0.2);
 
   --spacing: 0.25rem;
   --container-max-width: 72rem;
@@ -134,6 +130,9 @@
   --destructive: rgba(140, 40, 40, 0.2);
   --destructive-foreground: #e06060;
   --link: #8ab4e0;
+  --hover-surface: rgba(255, 255, 255, 0.04);
+  --active-surface: rgba(255, 255, 255, 0.03);
+  --focus-ring: rgba(138, 180, 224, 0.2);
 }
 
 /* ========== View Transitions ========== */
@@ -164,22 +163,22 @@
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-8px) scale(0.97);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes toast-out {
   from {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
   to {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-4px) scale(0.98);
   }
 }
 
@@ -265,9 +264,13 @@
   html {
     @apply scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-page-bg scrollbar-thumb-foreground/70;
     @apply bg-background relative h-full font-sans;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
     body {
-      @apply text-foreground relative flex flex-col bg-transparent text-base font-normal transition-all duration-300;
+      @apply text-foreground relative flex flex-col bg-transparent text-base font-normal;
+      transition: color 0.2s ease;
       line-height: 1.65;
       &.modal-overlay-active {
         @apply h-screen overflow-hidden;
@@ -283,9 +286,9 @@
     z-index: -1;
     pointer-events: none;
     background: radial-gradient(
-      ellipse 100% 60% at 30% 0%,
-      rgba(139, 168, 224, 0.03),
-      transparent 70%
+      ellipse 80% 50% at 25% 0%,
+      rgba(139, 168, 224, 0.025),
+      transparent 60%
     );
   }
 
@@ -303,23 +306,23 @@
   }
 
   h1 {
-    @apply mb-5 pl-0 font-medium max-md:text-2xl;
+    @apply mb-4 pl-0 font-medium max-md:text-2xl;
     font-size: 24px;
     line-height: 32px;
-    letter-spacing: -0.24px;
+    letter-spacing: -0.3px;
   }
 
   h2 {
-    @apply mb-3 pb-0 pl-0 max-md:text-xl;
+    @apply mb-2.5 pb-0 pl-0 max-md:text-xl;
     font-size: 24px;
     font-weight: 500;
     line-height: 32px;
-    letter-spacing: -0.24px;
+    letter-spacing: -0.3px;
     border: none;
   }
 
   h3 {
-    @apply mb-3 max-md:text-base;
+    @apply mb-2.5 max-md:text-base;
     font-family: var(--font-sans);
     font-size: 16px;
     font-weight: 400;
@@ -330,20 +333,20 @@
   table + h3,
   .table + h3,
   div + h3 {
-    @apply mt-12;
+    @apply mt-10;
   }
 
   h4 {
-    @apply mb-2 text-lg max-md:text-base;
+    @apply mb-1.5 text-lg max-md:text-base;
     letter-spacing: -0.015em;
   }
 
   h5 {
-    @apply mb-2 text-base max-md:text-sm;
+    @apply mb-1.5 text-base max-md:text-sm;
   }
 
   h6 {
-    @apply mb-2 text-sm max-md:text-xs;
+    @apply mb-1.5 text-sm max-md:text-xs;
   }
 
   .page-category-label {
@@ -366,9 +369,10 @@
   }
 
   p {
-    @apply text-muted-foreground leading-relaxed;
-    font-size: 16px;
-    line-height: 26.4px;
+    @apply text-muted-foreground;
+    font-size: 15px;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
   }
 
   pre {
@@ -378,13 +382,18 @@
   code {
     @apply text-foreground rounded-md font-mono text-sm font-medium;
     background: color-mix(in srgb, var(--foreground) 5%, transparent);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 14px;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 13px;
   }
 
   a {
-    @apply text-link no-underline hover:underline;
+    @apply text-link no-underline;
+    transition: color 0.15s ease;
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
   }
 
   var {

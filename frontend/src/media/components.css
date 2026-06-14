@@ -3,9 +3,19 @@
     button,
     .btn,
     .cbi-button {
-      @apply inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-lg border px-3.5 text-xs font-normal antialiased shadow-sm transition-all duration-200 max-md:h-9 max-md:text-sm;
+      @apply inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-lg border px-3.5 text-xs font-normal antialiased max-md:h-9 max-md:text-sm;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.1s ease;
       &[disabled] {
-        @apply cursor-not-allowed opacity-60;
+        @apply cursor-not-allowed opacity-50;
+        box-shadow: none;
+      }
+      &:active:not([disabled]) {
+        transform: scale(0.98);
       }
       .td & {
         @apply inline-flex w-auto flex-none whitespace-nowrap max-md:min-h-9 max-md:text-sm;
@@ -21,15 +31,14 @@
     .cbi-button-up,
     .cbi-button-down {
       @apply border-border bg-secondary text-secondary-foreground;
-      transition: all 0.15s ease;
 
       &:hover:not([disabled]) {
-        background: rgba(255, 255, 255, 0.06);
+        background: var(--hover-surface);
         border-color: rgba(255, 255, 255, 0.1);
       }
 
       &:active:not([disabled]) {
-        background: rgba(255, 255, 255, 0.04);
+        background: var(--active-surface);
       }
     }
 
@@ -40,15 +49,16 @@
     .btn.primary,
     .cbi-button-apply,
     .cbi-button-reload {
-      @apply border-primary bg-primary hover:bg-primary/90 text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60;
-      transition: all 0.15s ease;
+      @apply border-primary bg-primary text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50;
 
       &:hover:not([disabled]) {
-        background: color-mix(in srgb, var(--primary) 90%, white);
+        background: color-mix(in srgb, var(--primary) 88%, white);
+        box-shadow: 0 2px 8px rgba(122, 158, 200, 0.2);
       }
 
       &:active:not([disabled]) {
         background: color-mix(in srgb, var(--primary) 80%, white);
+        box-shadow: 0 1px 3px rgba(122, 158, 200, 0.15);
       }
     }
 
@@ -235,7 +245,16 @@
     input[type="password"],
     .cbi-input-text,
     .cbi-input {
-      @apply text-foreground border-border placeholder-muted-foreground/60 focus-visible:border-primary/50 focus-visible:ring-primary/10 relative rounded-md border bg-transparent px-3 py-2 font-mono text-sm leading-relaxed font-normal transition-all duration-200 focus-visible:ring-2 focus-visible:outline-none;
+      @apply text-foreground border-border placeholder-muted-foreground/60 relative rounded-md border bg-transparent px-3 py-2 font-mono text-sm leading-relaxed font-normal;
+      transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+
+      &:focus-visible {
+        border-color: color-mix(in srgb, var(--primary) 50%, transparent);
+        box-shadow: 0 0 0 3px var(--focus-ring);
+        outline: none;
+      }
 
       .table.cbi-section-table & {
         @apply w-full;
@@ -308,19 +327,43 @@
 
   @layer textarea {
     textarea {
-      @apply text-foreground bg-panel-bg placeholder-muted-foreground/30 border-border/80 focus-visible:border-primary/50 focus-visible:ring-primary/10 min-h-24 w-full resize-y overflow-y-auto rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed shadow-sm backdrop-blur-sm transition-all duration-200 focus-visible:ring-2 focus-visible:outline-none;
+      @apply text-foreground bg-panel-bg placeholder-muted-foreground/30 border-border/80 min-h-24 w-full resize-y overflow-y-auto rounded-xl border px-4 py-3 font-mono text-sm leading-relaxed;
+      transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+
+      &:focus-visible {
+        border-color: color-mix(in srgb, var(--primary) 50%, transparent);
+        box-shadow: 0 0 0 3px var(--focus-ring);
+        outline: none;
+      }
+
       &[disabled] {
-        @apply cursor-not-allowed opacity-60;
+        @apply cursor-not-allowed opacity-50;
       }
     }
   }
 
   @layer select {
     select {
-      @apply text-foreground border-border/60 bg-page-bg focus-visible:border-primary/50 focus-visible:ring-primary/10 hover:bg-muted/40 h-9 appearance-none rounded-lg border px-3 pr-10 text-sm font-normal shadow-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none;
+      @apply text-foreground border-border/60 bg-page-bg h-9 appearance-none rounded-lg border px-3 pr-10 text-sm font-normal;
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
       @apply bg-[url('@assets/icons/arrow-down.svg')] bg-size-[16px] bg-position-[right_0.75rem_center] bg-no-repeat;
+
+      &:hover {
+        background-color: var(--hover-surface);
+      }
+
+      &:focus-visible {
+        border-color: color-mix(in srgb, var(--primary) 50%, transparent);
+        box-shadow: 0 0 0 3px var(--focus-ring);
+        outline: none;
+      }
+
       &[disabled] {
-        @apply cursor-not-allowed opacity-60;
+        @apply cursor-not-allowed opacity-50;
       }
     }
 
@@ -525,7 +568,7 @@
   @keyframes dropdown-enter {
     from {
       opacity: 0;
-      transform: scale(0.95) translateY(-4px);
+      transform: scale(0.97) translateY(-4px);
     }
     to {
       opacity: 1;
@@ -536,14 +579,18 @@
   /* Shared dropdown panel styles (kuro-select + cbi-dropdown) */
   .kuro-select.open .kuro-select-panel,
   .cbi-dropdown[open] > ul.dropdown {
-    @apply border-border/80 bg-page-bg absolute left-0 z-60 block max-h-64 w-max max-w-[calc(100vw-2rem)] min-w-full overflow-x-auto overflow-y-auto rounded-lg border p-1.5 shadow-md backdrop-blur-sm;
-    animation: dropdown-enter 150ms ease-out;
+    @apply border-border/80 bg-page-bg absolute left-0 z-60 block max-h-64 w-max max-w-[calc(100vw-2rem)] min-w-full overflow-x-auto overflow-y-auto rounded-lg border p-1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    animation: dropdown-enter 120ms ease-out;
   }
 
   /* Shared dropdown option styles */
   .kuro-select-option,
   .cbi-dropdown[open] > ul.dropdown > li {
-    @apply text-foreground/90 hover:bg-primary/10 hover:text-primary flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm whitespace-nowrap transition-colors duration-100;
+    @apply text-foreground/90 hover:bg-primary/10 hover:text-primary flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 text-sm whitespace-nowrap;
+    transition:
+      background 0.1s ease,
+      color 0.1s ease;
 
     &::before {
       content: "";
@@ -564,12 +611,13 @@
 
   @layer tooltip {
     .cbi-tooltip {
-      @apply bg-tooltip-bg text-foreground border-border/60 pointer-events-none absolute z-110 max-w-[13rem] scale-95 rounded-md border px-2 py-2 text-xs leading-4 break-normal whitespace-normal opacity-0 shadow-md backdrop-blur-xl;
+      @apply bg-tooltip-bg text-foreground border-border/60 pointer-events-none absolute z-110 max-w-[13rem] scale-95 rounded-lg border px-2.5 py-2 text-xs leading-4 break-normal whitespace-normal opacity-0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       transform-origin: var(--tooltip-origin, center bottom);
       transition:
-        opacity 150ms ease-out,
-        transform 150ms ease-out,
-        visibility 0ms linear 150ms;
+        opacity 120ms ease-out,
+        transform 120ms ease-out,
+        visibility 0ms linear 120ms;
 
       &.error {
         @apply border-error/40 bg-error text-error-foreground;
@@ -587,33 +635,34 @@
 
     .cbi-tooltip-container,
     [data-tooltip] {
-      @apply relative inline-block cursor-help whitespace-nowrap underline decoration-current decoration-dotted underline-offset-2 transition-all duration-200;
+      @apply relative inline-block cursor-help whitespace-nowrap underline decoration-current decoration-dotted underline-offset-2;
+      transition: color 0.12s ease;
 
       & .cbi-tooltip {
         @apply pointer-events-none invisible scale-95 opacity-0;
         transition:
-          opacity 150ms ease-out,
-          transform 150ms ease-out,
-          visibility 0ms linear 150ms;
+          opacity 120ms ease-out,
+          transform 120ms ease-out,
+          visibility 0ms linear 120ms;
       }
 
       &:hover .cbi-tooltip {
         @apply visible scale-100 opacity-100;
         transition:
-          opacity 200ms ease-out 300ms,
-          transform 200ms ease-out 300ms,
-          visibility 0ms linear 300ms;
+          opacity 150ms ease-out 200ms,
+          transform 150ms ease-out 200ms,
+          visibility 0ms linear 200ms;
       }
     }
   }
 
   @layer message {
     .alert-message {
-      @apply relative mt-0 mb-8 overflow-hidden rounded-2xl border py-4 max-md:mx-0 max-md:mt-0 max-md:mb-6 max-md:py-3;
-      padding-left: 52px;
-      padding-right: 20px;
-      background: color-mix(in srgb, var(--foreground) 5%, transparent);
-      border-color: color-mix(in srgb, var(--foreground) 10%, transparent);
+      @apply relative mt-0 mb-6 overflow-hidden rounded-xl border py-3.5 max-md:mx-0 max-md:mt-0 max-md:mb-5 max-md:py-3;
+      padding-left: 48px;
+      padding-right: 16px;
+      background: color-mix(in srgb, var(--foreground) 4%, transparent);
+      border-color: color-mix(in srgb, var(--foreground) 8%, transparent);
       color: var(--muted-foreground);
 
       @media (max-width: 767px) {
@@ -819,7 +868,7 @@
 
   @layer progress {
     .cbi-progressbar {
-      @apply before:text-foreground bg-secondary relative h-3.5 w-full cursor-help overflow-hidden rounded-full before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-2xl before:text-xs before:whitespace-nowrap before:content-[attr(title)] max-md:h-4 max-md:rounded-2xl max-md:before:text-xs max-md:before:leading-normal;
+      @apply before:text-foreground bg-secondary relative h-3 w-full cursor-help overflow-hidden rounded-full before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-2xl before:text-[10px] before:whitespace-nowrap before:content-[attr(title)] max-md:h-3.5 max-md:rounded-2xl max-md:before:text-[10px] max-md:before:leading-normal;
       [data-page="admin-system-package-manager"] & {
         @apply max-sm:before:text-[10px];
       }
@@ -832,7 +881,7 @@
 
   @layer badge {
     .label {
-      @apply bg-default text-default-foreground rounded-full px-3 py-1 text-xs font-bold uppercase;
+      @apply bg-default text-default-foreground rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase;
 
       &.important {
         @apply bg-info text-info-foreground;
@@ -906,21 +955,21 @@
 
   @layer card {
     .cbi-section {
-      @apply mb-0 overflow-visible rounded-none border-b-0 p-0 pb-8;
+      @apply mb-0 overflow-visible rounded-none border-b-0 p-0 pb-6;
 
       & > div {
         @apply overflow-x-auto;
       }
 
       & + .cbi-section {
-        @apply border-t-border/50 border-t pt-8;
+        @apply border-t-border/50 border-t pt-6;
       }
 
       &[data-tab-title] {
         @apply m-0 border-t-0 border-b-0 p-0;
       }
       &[data-tab-active="true"] {
-        @apply mb-0 pb-8;
+        @apply mb-0 pb-6;
       }
 
       &:last-child {
@@ -931,7 +980,7 @@
         @apply border-0 bg-transparent shadow-none hover:shadow-none;
 
         &:not([data-tab-title]) + .cbi-section:not([data-tab-title]) {
-          @apply border-t-border/50 border-t pt-8;
+          @apply border-t-border/50 border-t pt-6;
         }
       }
 
@@ -1004,14 +1053,18 @@
     }
 
     .ifacebox {
-      @apply relative inline-flex min-w-40 flex-col items-stretch overflow-clip rounded-2xl border text-center text-base leading-5 transition-colors duration-200 max-md:min-w-30 max-md:flex-1;
+      @apply relative inline-flex min-w-40 flex-col items-stretch overflow-clip rounded-2xl border text-center text-base leading-5 max-md:min-w-30 max-md:flex-1;
       margin: 0 !important;
       max-width: none !important;
-      border-color: color-mix(in srgb, var(--foreground) 8%, transparent);
+      border-color: color-mix(in srgb, var(--foreground) 6%, transparent);
       background: var(--panel-bg);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
       &:hover {
-        border-color: var(--primary);
+        border-color: color-mix(in srgb, var(--primary) 40%, transparent);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
       }
 
       td & {
@@ -1148,11 +1201,16 @@
       @apply pointer-events-none fixed top-0 bottom-0 hidden overflow-auto bg-transparent;
 
       .modal-overlay-active & {
-        @apply bg-overlay-base/70 pointer-events-auto inset-0 right-0 left-0 z-100 grid grid-cols-1 place-items-center p-6 backdrop-blur-sm max-md:p-3;
+        @apply pointer-events-auto inset-0 right-0 left-0 z-100 grid grid-cols-1 place-items-center p-6 max-md:p-3;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
       }
 
       & > .modal {
-        @apply border-border/50 bg-page-bg flex max-h-[90vh] w-4xl max-w-full flex-col gap-4 overflow-y-auto rounded-xl border p-6 wrap-break-word whitespace-normal shadow-2xl backdrop-blur-lg backdrop-saturate-150 max-md:max-h-[95vh] max-md:gap-3 max-md:p-4;
+        @apply border-border/50 bg-page-bg flex max-h-[90vh] w-4xl max-w-full flex-col gap-4 overflow-y-auto rounded-xl border p-6 wrap-break-word whitespace-normal max-md:max-h-[95vh] max-md:gap-3 max-md:p-4;
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.05);
 
         & h4 {
           @apply mb-0 text-center;
@@ -1275,18 +1333,18 @@
 
     /* Modal entrance/exit animations */
     .modal-overlay-active & {
-      animation: modal-overlay-enter 200ms ease-out;
+      animation: modal-overlay-enter 180ms ease-out;
     }
 
     .modal-overlay-exit & {
-      animation: modal-overlay-exit 150ms ease-in forwards;
+      animation: modal-overlay-exit 120ms ease-in forwards;
     }
 
     & > .modal {
-      animation: modal-enter 200ms ease-out;
+      animation: modal-enter 200ms cubic-bezier(0.16, 1, 0.3, 1);
 
       &.modal-exit {
-        animation: modal-exit 150ms ease-in forwards;
+        animation: modal-exit 120ms ease-in forwards;
       }
     }
 
@@ -1311,7 +1369,7 @@
     @keyframes modal-enter {
       from {
         opacity: 0;
-        transform: scale(0.96) translateY(8px);
+        transform: scale(0.97) translateY(6px);
       }
       to {
         opacity: 1;
@@ -1326,7 +1384,7 @@
       }
       to {
         opacity: 0;
-        transform: scale(0.96) translateY(8px);
+        transform: scale(0.97) translateY(4px);
       }
     }
   }
@@ -1361,16 +1419,20 @@
 
   /* Section toggle button */
   .sidebar-toggle {
-    @apply flex w-full cursor-pointer items-center justify-start rounded-xl py-1.5 pr-3 pl-4 text-left text-sm font-normal no-underline transition-all duration-150;
+    @apply flex w-full cursor-pointer items-center justify-start rounded-xl py-1.5 pr-3 pl-4 text-left text-sm font-normal no-underline;
     color: var(--sidebar-link);
     line-height: 24px;
     background: none;
     border: none;
     box-shadow: none;
+    transition:
+      background 0.12s ease,
+      color 0.12s ease;
   }
 
   .sidebar-toggle:hover {
     background: var(--sidebar-hover-bg);
+    color: var(--foreground);
   }
 
   .sidebar-chevron {
@@ -1392,10 +1454,13 @@
 
   /* Sub-links: extra indentation (28px vs parent 16px) */
   a.sidebar-link {
-    @apply block rounded-xl py-1.5 pr-3 text-sm font-normal no-underline transition-all duration-150;
+    @apply block rounded-xl py-1.5 pr-3 text-sm font-normal no-underline;
     padding-left: 28px;
     color: var(--sidebar-link);
     line-height: 24px;
+    transition:
+      background 0.12s ease,
+      color 0.12s ease;
   }
 
   a.sidebar-link:hover {
@@ -1412,13 +1477,14 @@
   a.sidebar-link.active::after {
     content: "";
     position: absolute;
-    left: 0;
+    left: 4px;
     top: 50%;
     transform: translateY(-50%);
     width: 2px;
-    height: 50%;
-    border-radius: 0 2px 2px 0;
+    height: 45%;
+    border-radius: 1px;
     background: var(--primary);
+    opacity: 0.8;
   }
 
   /* Logout link at bottom of sidebar */
@@ -1436,8 +1502,11 @@
 
   @layer overlay {
     .mobile-menu-overlay {
-      @apply max-lg:invisible max-lg:fixed max-lg:inset-0 max-lg:z-60 max-lg:opacity-0 max-lg:transition-all max-lg:duration-300 lg:hidden;
-      background: rgba(0, 0, 0, 0.2);
+      @apply max-lg:invisible max-lg:fixed max-lg:inset-0 max-lg:z-60 max-lg:opacity-0 lg:hidden;
+      transition:
+        visibility 0.25s ease,
+        opacity 0.25s ease;
+      background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
 
@@ -1736,11 +1805,17 @@
   @layer form {
     .cbi-input-invalid,
     .cbi-value-error {
-      @apply !border-error/70 focus:!ring-error/40;
+      border-color: color-mix(
+        in srgb,
+        var(--error-foreground) 50%,
+        transparent
+      ) !important;
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--error-foreground) 15%, transparent) !important;
     }
 
     .cbi-value {
-      @apply relative items-start py-5;
+      @apply relative items-start py-4;
 
       &:has(.cbi-dropdown[open]) {
         @apply z-50;
@@ -1755,7 +1830,7 @@
         flex-direction: column;
         align-items: stretch;
         gap: 0.375rem;
-        padding-block: 1rem;
+        padding-block: 0.875rem;
       }
 
       &.hidden {
@@ -1852,7 +1927,7 @@
 
   @layer segmented {
     .cbi-tabmenu {
-      @apply border-border/10 relative mb-6 flex flex-wrap items-center gap-6 border-b;
+      @apply border-border/10 relative mb-5 flex flex-wrap items-center gap-6 border-b;
 
       /* Active underline — positioned by JS via custom properties */
       &::after {
@@ -1888,9 +1963,10 @@
         }
 
         & > a {
-          @apply text-muted-foreground flex cursor-pointer items-center justify-center border-none bg-none text-base font-normal whitespace-nowrap no-underline transition-colors duration-200;
-          height: 46px;
+          @apply text-muted-foreground flex cursor-pointer items-center justify-center border-none bg-none text-base font-normal whitespace-nowrap no-underline;
+          height: 42px;
           padding: 0;
+          transition: color 0.15s ease;
 
           &:hover {
             @apply text-foreground;
@@ -1951,14 +2027,19 @@
 
   @layer tab {
     #tabmenu {
-      @apply mb-8 w-full;
+      @apply mb-6 w-full;
     }
 
     .tabs {
       @apply border-border/10 relative flex items-center gap-6 overflow-x-auto border-b;
 
       & a {
-        @apply text-muted-foreground hover:text-foreground block py-3 text-center text-base font-normal whitespace-nowrap transition-colors duration-200 hover:no-underline;
+        @apply text-muted-foreground block py-2.5 text-center text-base font-normal whitespace-nowrap hover:no-underline;
+        transition: color 0.15s ease;
+
+        &:hover {
+          @apply text-foreground;
+        }
       }
 
       & > li.active {
@@ -1970,12 +2051,12 @@
     }
 
     .cbi-section-node-tabbed {
-      @apply mt-6;
+      @apply mt-5;
       overflow: visible !important;
     }
 
     .cbi-section-node {
-      @apply flex flex-col gap-0 pt-6;
+      @apply flex flex-col gap-0 pt-5;
       overflow: visible !important;
 
       & > .cbi-value + .cbi-value {
@@ -2001,7 +2082,7 @@
       --login-fg: var(--foreground);
       --login-muted: var(--muted-foreground);
       --login-border: var(--border);
-      --login-input-bg: color-mix(in srgb, var(--foreground) 4%, transparent);
+      --login-input-bg: rgba(255, 255, 255, 0.03);
       --login-accent: var(--primary);
 
       @apply relative flex min-h-dvh items-center justify-center overflow-hidden px-6 py-12;
@@ -2033,36 +2114,40 @@
 
       .login-shell {
         @apply relative z-10 flex w-full max-w-[26rem] flex-col items-center;
-        animation: login-fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-        animation-delay: 0.15s;
+        animation: login-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-delay: 0.1s;
 
         .login-card {
-          @apply flex w-full flex-col items-center gap-6 rounded-3xl border p-10 text-center shadow-2xl max-md:p-8;
-          background: color-mix(in srgb, var(--panel-bg) 80%, transparent);
-          border-color: color-mix(in srgb, var(--login-fg) 8%, transparent);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
+          @apply flex w-full flex-col items-center gap-5 rounded-2xl border p-8 text-center max-md:p-6;
+          background: rgba(17, 17, 17, 0.85);
+          border-color: color-mix(in srgb, var(--login-fg) 6%, transparent);
+          box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
 
           .login-brand {
-            @apply mb-1 flex items-center justify-center rounded-2xl border px-5 py-3 shadow-sm;
-            background: color-mix(in srgb, var(--foreground) 5%, transparent);
-            border-color: color-mix(in srgb, var(--login-fg) 8%, transparent);
+            @apply mb-0.5 flex items-center justify-center rounded-xl border px-4 py-2;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: color-mix(in srgb, var(--login-fg) 6%, transparent);
 
             .login-brand-text {
-              @apply text-base font-medium;
+              @apply text-sm font-medium;
               font-family: var(--font-serif);
               color: var(--login-fg);
             }
           }
 
           .login-hostname {
-            @apply m-0 text-[2rem] leading-none font-semibold tracking-tight max-md:text-[1.75rem];
+            @apply m-0 text-[1.75rem] leading-none font-semibold tracking-tight max-md:text-[1.5rem];
             font-family: var(--font-serif);
             color: var(--login-fg);
+            letter-spacing: -0.5px;
           }
 
           .login-subtitle {
-            @apply m-0 -mt-1.5 text-sm font-normal;
+            @apply m-0 -mt-1 text-sm font-normal;
             color: var(--login-muted);
           }
 
@@ -2082,38 +2167,37 @@
           }
 
           .login-fields {
-            @apply flex w-full flex-col gap-4;
+            @apply flex w-full flex-col gap-3.5;
 
             .login-input-wrap {
               @apply flex w-full flex-col gap-1.5 text-left;
 
               .login-label {
-                @apply text-xs font-medium;
+                @apply text-xs font-medium tracking-wide;
                 color: var(--login-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
               }
             }
 
             .login-input {
-              @apply h-auto w-full appearance-none rounded-xl border px-4 py-3 text-left font-sans text-base shadow-none transition-all focus:shadow-none focus:ring-0 focus:outline-none;
+              @apply h-auto w-full appearance-none rounded-lg border px-4 py-2.5 text-left font-sans text-base;
               color: var(--login-fg);
               background: var(--login-input-bg);
-              border-color: color-mix(
-                in srgb,
-                var(--login-fg) 10%,
-                transparent
-              );
+              border-color: color-mix(in srgb, var(--login-fg) 8%, transparent);
+              transition:
+                border-color 0.15s ease,
+                background 0.15s ease;
 
               &::placeholder {
-                color: color-mix(in srgb, var(--login-fg) 25%, transparent);
+                color: color-mix(in srgb, var(--login-fg) 20%, transparent);
               }
 
               &:focus {
                 border-color: var(--login-accent);
-                background: color-mix(
-                  in srgb,
-                  var(--foreground) 6%,
-                  transparent
-                );
+                background: rgba(255, 255, 255, 0.05);
+                outline: none;
+                box-shadow: 0 0 0 3px var(--focus-ring);
               }
             }
 
@@ -2125,9 +2209,12 @@
               }
 
               .login-submit {
-                @apply absolute top-1/2 right-2 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg border-0 p-0 shadow-none transition-all;
+                @apply absolute top-1/2 right-2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-0 p-0;
                 color: var(--primary-foreground);
                 background: var(--login-accent);
+                transition:
+                  background 0.15s ease,
+                  transform 0.1s ease;
 
                 &:hover {
                   background: color-mix(
@@ -2135,11 +2222,11 @@
                     var(--login-accent) 85%,
                     white
                   );
-                  transform: translateY(-50%) scale(1.05);
+                  transform: translateY(-50%) scale(1.04);
                 }
 
                 &:active {
-                  transform: translateY(-50%) scale(0.98);
+                  transform: translateY(-50%) scale(0.96);
                 }
 
                 & svg {

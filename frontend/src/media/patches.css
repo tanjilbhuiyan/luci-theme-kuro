@@ -40,6 +40,23 @@
   }
 
   @layer luci-mod-dashboard {
+    /* Hide sidebar and TOC on dashboard, full width content */
+    [data-page="admin-status-overview"] {
+      & .docs-sidebar {
+        display: none !important;
+        width: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      & .docs-toc {
+        display: none !important;
+      }
+
+      & .docs-content {
+        max-width: 100% !important;
+      }
+    }
+
     .Dashboard {
       & > .section-content {
         & .dashboard-bg {
