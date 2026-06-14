@@ -60,7 +60,7 @@
 		<header>
 			<div id="header-blur-overlay" class="header-blur-overlay" data-is-opaque="false"></div>
 			<div class="header-content">
-				<a class="brand" href="/"><img class="brand-logo" src="{{ media }}/images/{{ logo_png }}?v={{ icon_cache_version }}" alt="" width="24" height="24"><span class="brand-text">{{ striptags(boardinfo.hostname ?? '?') }}</span></a>
+				<a class="brand" href="/"><span class="brand-mark">黒 / Kuro</span><span class="brand-text">{{ striptags(boardinfo.hostname ?? '?') }}</span></a>
 				<div class="header-spacer"></div>
 				<a class="header-logout-btn" href="{{ dispatcher.build_url('admin/logout') }}">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>

@@ -201,10 +201,10 @@ Build the `.ipk`/`.apk` via GitHub Actions or OpenWrt SDK, then install on the r
 
 ```bash
 # opkg (OpenWrt < 25.12)
-opkg install /tmp/luci-theme-kuro_1.1.0-r20260615_all.ipk
+opkg install /tmp/luci-theme-kuro_1.2.0-r20260615_all.ipk
 
 # apk (OpenWrt 25.12+)
-apk add --allow-untrusted /tmp/luci-theme-kuro-1.1.0-r20260615.apk
+apk add --allow-untrusted /tmp/luci-theme-kuro-1.2.0-r20260615.apk
 ```
 
 ## Package Compilation

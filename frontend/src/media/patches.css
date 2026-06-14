@@ -28,6 +28,17 @@
     }
   }
 
+  @layer luci-app-statistics {
+    /* Dark text on primary-colored statistics controls */
+    [data-page="admin-statistics-graphs"] .controls {
+      .cbi-button,
+      .cbi-dropdown > ul > li[display],
+      .cbi-dropdown[open] > ul.dropdown > li[selected] {
+        color: var(--primary-foreground) !important;
+      }
+    }
+  }
+
   @layer luci-mod-dashboard {
     .Dashboard {
       & > .section-content {

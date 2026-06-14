@@ -24,7 +24,7 @@
 	<div class="login-shell">
 		<form method="post" class="login-card">
 			<div class="login-brand">
-				<img class="brand-logo" src="{{ media }}/images/{{ logo_png }}?v={{ icon_cache_version }}" alt="" width="32" height="32">
+				<span class="login-brand-text">黒 / Kuro</span>
 			</div>
 
 			<h1 class="login-hostname">{{ striptags(boardinfo?.hostname ?? '?') }}</h1>

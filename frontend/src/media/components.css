@@ -856,6 +856,7 @@
 
       &[style*="--zone-color-rgb"] {
         @apply bg-[rgb(var(--zone-color-rgb),.7)]!;
+        color: var(--primary-foreground);
 
         & em {
           @apply text-default-foreground;
@@ -2043,12 +2044,14 @@
           -webkit-backdrop-filter: blur(20px);
 
           .login-brand {
-            @apply mb-1 flex size-14 items-center justify-center rounded-2xl border shadow-sm;
+            @apply mb-1 flex items-center justify-center rounded-2xl border px-5 py-3 shadow-sm;
             background: color-mix(in srgb, var(--foreground) 5%, transparent);
             border-color: color-mix(in srgb, var(--login-fg) 8%, transparent);
 
-            & img {
-              @apply size-8;
+            .login-brand-text {
+              @apply text-base font-medium;
+              font-family: var(--font-serif);
+              color: var(--login-fg);
             }
           }
 
